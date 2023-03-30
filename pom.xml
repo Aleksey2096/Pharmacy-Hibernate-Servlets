@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>by.academy</groupId>
+    <artifactId>pharmacy</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Huge Pharma</name>
+    <packaging>war</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
+        <!-- dependencies versions -->
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <jstl.version>1.2</jstl.version>
+        <jsp-api.version>2.2</jsp-api.version>
+        <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
+        <hibernate-entitymanager.version>5.6.15.Final</hibernate-entitymanager.version>
+        <commons-codec.version>1.15</commons-codec.version>
+        <h2.version>2.1.214</h2.version>
+        <liquibase-core.version>4.20.0</liquibase-core.version>
+        <junit-jupiter-engine.version>5.9.2</junit-jupiter-engine.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
+        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+        <lombok.version>1.18.26</lombok.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>${jsp-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate-entitymanager.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter-engine.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>HugePharma</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase-core.version}</version>
+                <configuration>
+                    <propertyFile>${propertyFilePath}</propertyFile>
+                    <changeLogFile>${changeLogFilePath}</changeLogFile>
+                </configuration>
+            </plugin>
+
+
+            <!--plugin for running additional junit methods(@AfterEach) during mvn:test-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit-jupiter-engine.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/entity/**/*.class</exclude>
+                        <exclude>**/dto/**/*.class</exclude>
+                        <exclude>**/dao/**/*.class</exclude>
+                        <exclude>**/controller/**/*.class</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+
+            <!-- for checkstyle report -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven-site-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
+            </plugin>
+
+
+            <!--updates two databases at once by command - mvn:compile-->
+
+            <!--            <plugin>-->
+            <!--                <groupId>org.liquibase</groupId>-->
+            <!--                <artifactId>liquibase-maven-plugin</artifactId>-->
+            <!--                <version>${liquibase-core.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>db1-update</id>-->
+            <!--                        <phase>process-resources</phase>-->
+            <!--                        <configuration>-->
+            <!--                            <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>-->
+            <!--                            <changeLogFile>src/main/resources/liquibase/changelog_1.0.xml</changeLogFile>-->
+            <!--                        </configuration>-->
+            <!--                        <goals>-->
+            <!--                            <goal>update</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                    <execution>-->
+            <!--                        <id>db2-update</id>-->
+            <!--                        <phase>process-resources</phase>-->
+            <!--                        <configuration>-->
+            <!--                            <propertyFile>src/test/resources/liquibase/liquibase.properties</propertyFile>-->
+            <!--                            <changeLogFile>src/main/resources/liquibase/changelog_1.0.xml</changeLogFile>-->
+            <!--                        </configuration>-->
+            <!--                        <goals>-->
+            <!--                            <goal>update</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+        </plugins>
+    </build>
+
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+
+    <profiles>
+        <profile>
+            <id>main</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <propertyFilePath>src/main/resources/liquibase/liquibase.properties</propertyFilePath>
+                <changeLogFilePath>src/main/resources/liquibase/changelog_1.0.xml</changeLogFilePath>
+                <persistenceUnitName>pharmacy_db</persistenceUnitName>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <propertyFilePath>src/test/resources/liquibase/liquibase.properties</propertyFilePath>
+                <changeLogFilePath>src/test/resources/liquibase/changelog_1.0.xml</changeLogFilePath>
+                <persistenceUnitName>pharmacy_test_db</persistenceUnitName>
+            </properties>
+        </profile>
+    </profiles>
+</project>

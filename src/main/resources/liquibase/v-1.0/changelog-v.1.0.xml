@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create_pharmacy_data" author="Aleksey">
+        <sqlFile dbms="mysql" path="src/main/resources/sql/3_create_tables.sql"/>
+        <sqlFile dbms="mysql" path="src/main/resources/sql/4_fill_tables.sql"/>
+    </changeSet>
+
+</databaseChangeLog>
