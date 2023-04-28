@@ -6,7 +6,6 @@ import by.academy.pharmacy.entity.ProducerEntity;
 
 public interface ProducerDAO extends DAO<ProducerEntity, Long> {
     PaginationObject<ProducerEntity> selectAllWithParameters(
-            final PaginationObject<ProducerEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<ProducerEntity> pagination, final OrderObject orderObject,
             final String searchValue);
 }

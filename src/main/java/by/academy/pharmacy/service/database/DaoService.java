@@ -1,7 +1,7 @@
 package by.academy.pharmacy.service.database;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dao.DAO;
-import by.academy.pharmacy.service.mapping.Converter;
 
 import java.util.Set;
 
@@ -11,8 +11,7 @@ public interface DaoService<E, D, K> {
     Converter<E, D> getConverter();
 
     default D create(final D dto) {
-        return getConverter().convertToDto(
-                getDAO().insert(getConverter().convertToEntity(dto)));
+        return getConverter().convertToDto(getDAO().insert(getConverter().convertToEntity(dto)));
     }
 
     default D readById(final K key) {

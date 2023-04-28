@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -29,35 +28,35 @@ import static by.academy.pharmacy.entity.Constant.PRODUCER_ENTITY;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = PRODUCERS)
 public class ProducerEntity implements Serializable {
-	/**
-	 * Contains identification number of producer.
-	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	/**
-	 * Contains name of the company.
-	 */
-	@Column(name = COMPANY_NAME_DB)
-	private String companyName;
-	/**
-	 * Contains information about country where medicine was produced.
-	 */
-	@Column(name = COUNTRY_CODE_DB)
-	@Convert(converter = CountryConverter.class)
-	private Country country;
-	/**
-	 * Contains date when company was created.
-	 */
-	@Column(name = CREATION_DATE_DB)
-	private Date creationDate;
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	@OneToMany(mappedBy = PRODUCER_ENTITY, cascade = CascadeType.ALL)
-	private Set<MedicineEntity> medicineEntities;
+    /**
+     * Contains identification number of producer.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    /**
+     * Contains name of the company.
+     */
+    @Column(name = COMPANY_NAME_DB)
+    private String companyName;
+    /**
+     * Contains information about country where medicine was produced.
+     */
+    @Column(name = COUNTRY_CODE_DB)
+    @Convert(converter = CountryConverter.class)
+    private Country country;
+    /**
+     * Contains date when company was created.
+     */
+    @Column(name = CREATION_DATE_DB)
+    private Date creationDate;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = PRODUCER_ENTITY)
+    private Set<MedicineEntity> medicineEntities;
 }

@@ -24,57 +24,44 @@ import static by.academy.pharmacy.entity.Constant.MEDICINE_ENTITY;
 import static by.academy.pharmacy.entity.Constant.PRICE;
 
 public final class MedicineProductDaoImpl implements MedicineProductDAO {
-    private final EntityManager entityManager
-            = HibernateUtil.getEntityManager();
-
     @Override
     public Class<MedicineProductEntity> getEntityClass() {
         return MedicineProductEntity.class;
     }
 
     @Override
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    @Override
-    public Predicate createCommonPredicate(
-            final Root<MedicineProductEntity> root,
-            final String searchValue) {
+    public Predicate createCommonPredicate(final Root<MedicineProductEntity> root,
+                                           final String searchValue,
+                                           final EntityManager entityManager) {
         return createOrPredicate(searchValue, List.of(
                 root.get(ID).as(String.class),
                 root.get(DOSAGE).as(String.class),
                 root.get(FORM).as(String.class),
                 root.get(PRICE).as(String.class),
                 root.get(AMOUNT).as(String.class)
-        ));
+        ), entityManager);
     }
 
     @Override
     public PaginationObject<MedicineProductEntity> selectAllWithParameters(
-            final PaginationObject<MedicineProductEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<MedicineProductEntity> pagination, final OrderObject orderObject,
             final String searchValue) {
-        return selectAllWithParameters(pagination, orderObject, ID,
-                searchValue);
+        return selectAllWithParameters(pagination, orderObject, ID, searchValue);
     }
 
     @Override
     public PaginationObject<MedicineProductEntity> selectAllWithParametersByMedicine(
-            final PaginationObject<MedicineProductEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<MedicineProductEntity> pagination, final OrderObject orderObject,
             final String searchValue, final MedicineEntity medicineEntity) {
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.clear();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<MedicineProductEntity> cq = cb.createQuery(
-                MedicineProductEntity.class);
+        CriteriaQuery<MedicineProductEntity> cq = cb.createQuery(MedicineProductEntity.class);
         Root<MedicineProductEntity> root = cq.from(MedicineProductEntity.class);
         Predicate mainPredicate;
-        Predicate medicinePredicate = cb.equal(root.get(MEDICINE_ENTITY),
-                medicineEntity);
+        Predicate medicinePredicate = cb.equal(root.get(MEDICINE_ENTITY), medicineEntity);
         if (searchValue != null && !searchValue.isBlank()) {
-            mainPredicate = cb.and(createCommonPredicate(root, searchValue),
+            mainPredicate = cb.and(createCommonPredicate(root, searchValue, entityManager),
                     medicinePredicate);
         } else {
             mainPredicate = medicinePredicate;
@@ -88,22 +75,18 @@ public final class MedicineProductDaoImpl implements MedicineProductDAO {
         } else {
             cq.orderBy(cb.desc(root.get(orderObject.getOrderField())));
         }
-        TypedQuery<MedicineProductEntity> typedQuery
-                = entityManager.createQuery(cq);
-        typedQuery
-                .setFirstResult((pagination.getCurrentPage() - 1)
-                        * pagination.getRecordsPerPage());
+        TypedQuery<MedicineProductEntity> typedQuery = entityManager.createQuery(cq);
+        typedQuery.setFirstResult(
+                (pagination.getCurrentPage() - 1) * pagination.getRecordsPerPage());
         typedQuery.setMaxResults(pagination.getRecordsPerPage());
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        countQuery.select(
-                cb.count(countQuery.from(MedicineProductEntity.class)));
+        countQuery.select(cb.count(countQuery.from(MedicineProductEntity.class)));
         countQuery.where(mainPredicate);
-        pagination.setPagesNum(
-                countNumberOfPages(pagination.getRecordsPerPage(),
-                        entityManager.createQuery(countQuery)
-                                .getSingleResult()));
+        pagination.setPagesNum(countNumberOfPages(pagination.getRecordsPerPage(),
+                entityManager.createQuery(countQuery).getSingleResult()));
         pagination.setRecords(typedQuery.getResultList());
         entityManager.getTransaction().commit();
+        entityManager.close();
         return pagination;
     }
 }

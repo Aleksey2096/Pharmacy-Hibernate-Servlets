@@ -13,8 +13,7 @@ import by.academy.pharmacy.service.database.PrescriptionDaoService;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.PrescriptionDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COMMAND;
 import static by.academy.pharmacy.entity.Constant.JSP_CLIENT_PRESCRIPTIONS_INDEX_JSP;
@@ -27,8 +26,7 @@ public final class ReadPaginatedUserPrescriptionsCommand implements Command {
     /**
      * service working with dao layer.
      */
-    private final PrescriptionDaoService service
-            = new PrescriptionDaoServiceImpl();
+    private final PrescriptionDaoService service = new PrescriptionDaoServiceImpl();
     /**
      * service working with dao layer.
      */
@@ -36,31 +34,27 @@ public final class ReadPaginatedUserPrescriptionsCommand implements Command {
     /**
      * extracts PaginationObject from request.
      */
-    private final Extractor<PaginationObject<PrescriptionEntity>>
-            paginationObjectExtractor = new PaginationObjectExtractor<>();
+    private final Extractor<PaginationObject<PrescriptionEntity>> paginationObjectExtractor
+            = new PaginationObjectExtractor<>();
     /**
      * extracts OrderObject from request.
      */
-    private final Extractor<OrderObject> orderObjectExtractor
-            = new OrderObjectExtractor();
+    private final Extractor<OrderObject> orderObjectExtractor = new OrderObjectExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
         request.setAttribute(COMMAND, request.getParameter(COMMAND));
-        PaginationObject<PrescriptionEntity> paginationObject
-                = paginationObjectExtractor
-                .extract(request);
+        PaginationObject<PrescriptionEntity> paginationObject = paginationObjectExtractor.extract(
+                request);
         OrderObject orderObject = orderObjectExtractor.extract(request);
         String searchValue = request.getParameter(SEARCH_VALUE);
-        SessionUser sessionUser = (SessionUser) request.getSession()
-                .getAttribute(USER);
-        UserDTO userDTO = userService.readById(
-                sessionUser.getHealthCareCardNumber());
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute(USER);
+        UserDTO userDTO = userService.readById(sessionUser.getHealthCareCardNumber());
         request.setAttribute(SEARCH_VALUE, searchValue);
         request.setAttribute(ORDER_OBJECT, orderObject);
         request.setAttribute(PRESCRIPTIONS,
-                service.readAllWithParametersByUser(paginationObject,
-                        orderObject, searchValue, userDTO));
+                service.readAllWithParametersByUser(paginationObject, orderObject, searchValue,
+                        userDTO));
         return JSP_CLIENT_PRESCRIPTIONS_INDEX_JSP;
     }
 }

@@ -10,7 +10,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Data
@@ -43,11 +42,11 @@ public final class UserDTO implements Serializable {
      */
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private PersonalInfoDTO personalInfoDTO = new PersonalInfoDTO();
+    private PersonalInfoDTO personalInfoDTO;
     private String avatarImagePath;
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<MedicineProductDTO> cart = new LinkedHashSet<>();
+    private Set<MedicineProductDTO> cart;
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<PrescriptionDTO> prescriptionDTOs;

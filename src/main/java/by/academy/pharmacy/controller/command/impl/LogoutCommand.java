@@ -1,8 +1,7 @@
 package by.academy.pharmacy.controller.command.impl;
 
 import by.academy.pharmacy.controller.command.Command;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.DISPATCHER_READ_PAGINATED_CLIENT_MEDICINES_URL;
 

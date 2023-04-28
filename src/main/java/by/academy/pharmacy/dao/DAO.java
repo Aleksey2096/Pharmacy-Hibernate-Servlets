@@ -3,6 +3,7 @@ package by.academy.pharmacy.dao;
 import by.academy.pharmacy.entity.OrderObject;
 import by.academy.pharmacy.entity.OrderType;
 import by.academy.pharmacy.entity.PaginationObject;
+import by.academy.pharmacy.service.util.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -21,47 +22,51 @@ public interface DAO<E, K> {
 
     Class<E> getEntityClass();
 
-    EntityManager getEntityManager();
-
-    Predicate createCommonPredicate(Root<E> root, String searchValue);
+    Predicate createCommonPredicate(Root<E> root, String searchValue, EntityManager entityManager);
 
     default E insert(final E entity) {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().persist(entity);
-        getEntityManager().getTransaction().commit();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(entity);
+        entityManager.getTransaction().commit();
+        entityManager.close();
         return entity;
     }
 
     default E selectById(final K id) {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().clear();
-        E entity = getEntityManager().find(getEntityClass(), id);
-        getEntityManager().getTransaction().commit();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        E entity = entityManager.find(getEntityClass(), id);
+        entityManager.getTransaction().commit();
+        entityManager.close();
         return entity;
     }
 
     default void update(final E entity) {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().merge(entity);
-        getEntityManager().getTransaction().commit();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(entity);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     default void deleteById(final K id) {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().remove(
-                getEntityManager().find(getEntityClass(), id));
-        getEntityManager().getTransaction().commit();
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.find(getEntityClass(), id));
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @SuppressWarnings(UNCHECKED)
     default List<E> selectAll() {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().clear();
-        List<E> entities = getEntityManager()
-                .createQuery(String.format(FROM_HIBERNATE_CLASS,
-                        getEntityClass().getSimpleName()))
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        List<E> entities = entityManager.createQuery(
+                        String.format(FROM_HIBERNATE_CLASS, getEntityClass().getSimpleName()))
                 .getResultList();
-        getEntityManager().getTransaction().commit();
+        entityManager.getTransaction().commit();
+        entityManager.close();
         return entities;
     }
 
@@ -70,8 +75,7 @@ public interface DAO<E, K> {
      * @param rowsNum        common quantity of rows found in database.
      * @return number of pages.
      */
-    default Integer countNumberOfPages(final Integer recordsPerPage,
-                                       final Long rowsNum) {
+    default Integer countNumberOfPages(final Integer recordsPerPage, final Long rowsNum) {
         if (rowsNum % recordsPerPage == 0) {
             return (int) (rowsNum / recordsPerPage);
         } else {
@@ -79,9 +83,9 @@ public interface DAO<E, K> {
         }
     }
 
-    default Predicate createOrPredicate(String searchValue,
-                                        List<Expression<String>> expressions) {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+    default Predicate createOrPredicate(String searchValue, List<Expression<String>> expressions,
+                                        final EntityManager entityManager) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         Predicate[] predicates = new Predicate[expressions.size()];
         for (int i = 0; i < predicates.length; ++i) {
             predicates[i] = cb.like(expressions.get(i),
@@ -90,46 +94,46 @@ public interface DAO<E, K> {
         return cb.or(predicates);
     }
 
-    default PaginationObject<E> selectAllWithParameters(
-            final PaginationObject<E> pagination,
-            final OrderObject orderObject, final String defaultOrderField,
-            final String searchValue) {
-        getEntityManager().getTransaction().begin();
-        getEntityManager().clear();
-        Long count = countNumberOfRecords(searchValue);
-        CriteriaQuery<E> cq = createSelectQuery(orderObject, defaultOrderField,
-                searchValue);
-        TypedQuery<E> typedQuery = getEntityManager().createQuery(cq);
-        typedQuery
-                .setFirstResult((pagination.getCurrentPage() - 1)
-                        * pagination.getRecordsPerPage());
+    default PaginationObject<E> selectAllWithParameters(final PaginationObject<E> pagination,
+                                                        final OrderObject orderObject,
+                                                        final String defaultOrderField,
+                                                        final String searchValue) {
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        entityManager.getTransaction().begin();
+        Long count = countNumberOfRecords(searchValue, entityManager);
+        CriteriaQuery<E> cq = createSelectQuery(orderObject, defaultOrderField, searchValue,
+                entityManager);
+        TypedQuery<E> typedQuery = entityManager.createQuery(cq);
+        typedQuery.setFirstResult(
+                (pagination.getCurrentPage() - 1) * pagination.getRecordsPerPage());
         typedQuery.setMaxResults(pagination.getRecordsPerPage());
-        pagination.setPagesNum(
-                countNumberOfPages(pagination.getRecordsPerPage(), count));
+        pagination.setPagesNum(countNumberOfPages(pagination.getRecordsPerPage(), count));
         pagination.setRecords(typedQuery.getResultList());
-        getEntityManager().getTransaction().commit();
+        entityManager.getTransaction().commit();
+        entityManager.close();
         return pagination;
     }
 
-    default Long countNumberOfRecords(final String searchValue) {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+    default Long countNumberOfRecords(final String searchValue, final EntityManager entityManager) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         Root<E> root = countQuery.from(getEntityClass());
         countQuery.select(cb.count(root));
         if (searchValue != null && !searchValue.isBlank()) {
-            countQuery.where(createCommonPredicate(root, searchValue));
+            countQuery.where(createCommonPredicate(root, searchValue, entityManager));
         }
-        return getEntityManager().createQuery(countQuery).getSingleResult();
+        return entityManager.createQuery(countQuery).getSingleResult();
     }
 
     default CriteriaQuery<E> createSelectQuery(final OrderObject orderObject,
                                                final String defaultOrderField,
-                                               final String searchValue) {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+                                               final String searchValue,
+                                               final EntityManager entityManager) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> cq = cb.createQuery(getEntityClass());
         Root<E> root = cq.from(getEntityClass());
         if (searchValue != null && !searchValue.isBlank()) {
-            cq.select(root).where(createCommonPredicate(root, searchValue));
+            cq.select(root).where(createCommonPredicate(root, searchValue, entityManager));
         } else {
             cq.select(root);
         }

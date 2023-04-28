@@ -1,11 +1,10 @@
-package by.academy.pharmacy.service.mapping.impl;
+package by.academy.pharmacy.converter.impl;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dto.ProducerDTO;
 import by.academy.pharmacy.entity.ProducerEntity;
-import by.academy.pharmacy.service.mapping.Converter;
 
-public final class ProducerConverter
-        implements Converter<ProducerEntity, ProducerDTO> {
+public final class ProducerConverter implements Converter<ProducerEntity, ProducerDTO> {
     @Override
     public ProducerDTO convertToDto(final ProducerEntity entity) {
         if (entity == null) {

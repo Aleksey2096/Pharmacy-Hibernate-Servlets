@@ -10,8 +10,7 @@ import by.academy.pharmacy.service.database.ProducerDaoService;
 import by.academy.pharmacy.service.database.impl.MedicineDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.ProducerDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.PREVIOUS_REQUEST_LINK;
 import static by.academy.pharmacy.entity.Constant.PRODUCER_ID_DB;
@@ -34,8 +33,8 @@ public final class SaveNewMedicineCommand implements Command {
     @Override
     public String execute(final HttpServletRequest request) {
         MedicineDTO medicineDTO = extractor.extract(request);
-        ProducerDTO producerDTO = producerDaoService
-                .readById(RequestDataUtil.getLong(PRODUCER_ID_DB, request));
+        ProducerDTO producerDTO = producerDaoService.readById(
+                RequestDataUtil.getLong(PRODUCER_ID_DB, request));
         medicineDTO.setProducerDTO(producerDTO);
         service.create(medicineDTO);
         return request.getParameter(PREVIOUS_REQUEST_LINK);

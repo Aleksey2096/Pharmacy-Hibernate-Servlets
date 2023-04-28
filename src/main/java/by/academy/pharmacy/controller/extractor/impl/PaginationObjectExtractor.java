@@ -3,11 +3,9 @@ package by.academy.pharmacy.controller.extractor.impl;
 import by.academy.pharmacy.controller.extractor.Extractor;
 import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.service.util.RequestDataUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
-public final class PaginationObjectExtractor<E>
-        implements Extractor<PaginationObject<E>> {
+public final class PaginationObjectExtractor<E> implements Extractor<PaginationObject<E>> {
     @Override
     public PaginationObject<E> extract(final HttpServletRequest request) {
         return PaginationObject.<E>builder()

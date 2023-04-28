@@ -3,8 +3,7 @@ package by.academy.pharmacy.controller.extractor.impl;
 import by.academy.pharmacy.controller.extractor.Extractor;
 import by.academy.pharmacy.dto.MedicineDTO;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.APPROVAL_DATE_DB;
 import static by.academy.pharmacy.entity.Constant.EMPTY_PATH;
@@ -21,17 +20,14 @@ public final class MedicineDtoExtractor implements Extractor<MedicineDTO> {
         MedicineDTO medicineDTO = MedicineDTO.builder()
                 .id(RequestDataUtil.getLong(MEDICINE_ID_DB, request))
                 .title(RequestDataUtil.getString(TITLE, request))
-                .isNonprescription(
-                        RequestDataUtil.getDBoolean(IS_NONPRESCRIPTION_DB,
-                                request))
-                .approvalDate(
-                        RequestDataUtil.getDate(APPROVAL_DATE_DB, request))
+                .isNonprescription(RequestDataUtil.getBoolean(IS_NONPRESCRIPTION_DB, request))
+                .approvalDate(RequestDataUtil.getDate(APPROVAL_DATE_DB, request))
                 .build();
         String medicineImagePath = IMG_MEDICINE + medicineDTO.getTitle() + JPG;
         medicineDTO.setMedicineImagePath(medicineImagePath);
         RequestDataUtil.saveFile(
-                request.getServletContext().getRealPath(EMPTY_PATH)
-                        + medicineImagePath, request, IMAGE);
+                request.getServletContext().getRealPath(EMPTY_PATH) + medicineImagePath, request,
+                IMAGE);
         return medicineDTO;
     }
 

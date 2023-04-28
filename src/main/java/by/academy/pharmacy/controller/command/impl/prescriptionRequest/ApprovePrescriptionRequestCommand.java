@@ -17,8 +17,7 @@ import by.academy.pharmacy.service.database.impl.PrescriptionDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.PrescriptionRequestDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.HEALTH_CARE_CARD_NUMBER_DB;
 import static by.academy.pharmacy.entity.Constant.MEDICINE_PRODUCT_ID_DB;
@@ -29,8 +28,7 @@ public final class ApprovePrescriptionRequestCommand implements Command {
     /**
      * service working with dao layer.
      */
-    private final PrescriptionDaoService service
-            = new PrescriptionDaoServiceImpl();
+    private final PrescriptionDaoService service = new PrescriptionDaoServiceImpl();
     /**
      * service working with dao layer.
      */
@@ -48,25 +46,21 @@ public final class ApprovePrescriptionRequestCommand implements Command {
     /**
      * extracts ProducerDTO objects from request.
      */
-    private final Extractor<PrescriptionDTO> extractor
-            = new PrescriptionDtoExtractor();
+    private final Extractor<PrescriptionDTO> extractor = new PrescriptionDtoExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
         PrescriptionDTO prescriptionDTO = extractor.extract(request);
-        MedicineProductDTO medicineProductDTO
-                = medicineProductDaoService.readById(
+        MedicineProductDTO medicineProductDTO = medicineProductDaoService.readById(
                 RequestDataUtil.getLong(MEDICINE_PRODUCT_ID_DB, request));
         UserDTO userDTO = userDaoService.readById(
                 RequestDataUtil.getLong(HEALTH_CARE_CARD_NUMBER_DB, request));
         prescriptionDTO.setMedicineProductDTO(medicineProductDTO);
         prescriptionDTO.setUserDTO(userDTO);
         service.create(prescriptionDTO);
-        PrescriptionRequestDTO prescriptionRequestDTO
-                = prescriptionRequestDaoService.readById(
+        PrescriptionRequestDTO prescriptionRequestDTO = prescriptionRequestDaoService.readById(
                 RequestDataUtil.getLong(PRESCRIPTION_REQUEST_ID_DB, request));
-        prescriptionRequestDTO.setPrescriptionRequestStatus(
-                PrescriptionRequestStatus.APPROVED);
+        prescriptionRequestDTO.setPrescriptionRequestStatus(PrescriptionRequestStatus.APPROVED);
         prescriptionRequestDaoService.update(prescriptionRequestDTO);
         return request.getParameter(PREVIOUS_REQUEST_LINK_APPROVED);
     }

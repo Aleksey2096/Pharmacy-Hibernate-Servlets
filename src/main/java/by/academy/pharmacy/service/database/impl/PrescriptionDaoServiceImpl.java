@@ -1,5 +1,8 @@
 package by.academy.pharmacy.service.database.impl;
 
+import by.academy.pharmacy.converter.Converter;
+import by.academy.pharmacy.converter.impl.PrescriptionConverter;
+import by.academy.pharmacy.converter.impl.UserConverter;
 import by.academy.pharmacy.dao.DAO;
 import by.academy.pharmacy.dao.PrescriptionDAO;
 import by.academy.pharmacy.dao.impl.PrescriptionDaoImpl;
@@ -10,17 +13,12 @@ import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.entity.PrescriptionEntity;
 import by.academy.pharmacy.entity.UserEntity;
 import by.academy.pharmacy.service.database.PrescriptionDaoService;
-import by.academy.pharmacy.service.mapping.Converter;
-import by.academy.pharmacy.service.mapping.impl.PrescriptionConverter;
-import by.academy.pharmacy.service.mapping.impl.UserConverter;
 
-public final class PrescriptionDaoServiceImpl
-        implements PrescriptionDaoService {
+public final class PrescriptionDaoServiceImpl implements PrescriptionDaoService {
     private final PrescriptionDAO dao = new PrescriptionDaoImpl();
     private final Converter<PrescriptionEntity, PrescriptionDTO> converter
             = new PrescriptionConverter();
-    private final Converter<UserEntity, UserDTO> userConverter
-            = new UserConverter();
+    private final Converter<UserEntity, UserDTO> userConverter = new UserConverter();
 
     @Override
     public DAO<PrescriptionEntity, Long> getDAO() {
@@ -38,8 +36,7 @@ public final class PrescriptionDaoServiceImpl
             final OrderObject orderObject,
             final String searchValue, final UserDTO userDTO) {
         return converter.convertToDtoPaginationObject(
-                dao.selectAllWithParametersByUser(pagination,
-                        orderObject, searchValue,
+                dao.selectAllWithParametersByUser(pagination, orderObject, searchValue,
                         userConverter.convertToEntity(userDTO)));
     }
 }

@@ -1,6 +1,6 @@
 package by.academy.pharmacy.controller.command;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface Command {
     /**

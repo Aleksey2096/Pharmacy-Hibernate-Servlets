@@ -53,7 +53,7 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <input type="hidden" name="role" value="CLIENT">
+                <input type="hidden" name="role" value="${requestScope.user.role}">
             </c:otherwise>
         </c:choose>
         <div class="user-box">

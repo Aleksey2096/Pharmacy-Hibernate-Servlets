@@ -9,8 +9,8 @@ import by.academy.pharmacy.service.database.MedicineProductDaoService;
 import by.academy.pharmacy.service.database.impl.MedicineDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.MedicineProductDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 import static by.academy.pharmacy.entity.Constant.FORMS;
@@ -24,21 +24,18 @@ public final class GetMedicineProductEditFormCommand implements Command {
     /**
      * service working with dao layer.
      */
-    private final MedicineProductDaoService service
-            = new MedicineProductDaoServiceImpl();
+    private final MedicineProductDaoService service = new MedicineProductDaoServiceImpl();
     /**
      * service working with dao layer.
      */
-    private final MedicineDaoService medicineDaoService
-            = new MedicineDaoServiceImpl();
+    private final MedicineDaoService medicineDaoService = new MedicineDaoServiceImpl();
 
     @Override
     public String execute(final HttpServletRequest request) {
         MedicineProductDTO medicineProductDTO = service.readById(
                 RequestDataUtil.getLong(MEDICINE_PRODUCT_ID_DB, request));
         request.setAttribute(MEDICINE_PRODUCT, medicineProductDTO);
-        request.setAttribute(PREVIOUS_REQUEST_LINK,
-                request.getParameter(PREVIOUS_REQUEST_LINK));
+        request.setAttribute(PREVIOUS_REQUEST_LINK, request.getParameter(PREVIOUS_REQUEST_LINK));
         Set<MedicineDTO> medicineDTOs = medicineDaoService.readAll();
         request.setAttribute(MEDICINES, medicineDTOs);
         request.setAttribute(FORMS, Form.values());

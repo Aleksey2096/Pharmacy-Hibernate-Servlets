@@ -10,8 +10,7 @@ import by.academy.pharmacy.dto.PersonalInfoDTO;
 import by.academy.pharmacy.dto.UserDTO;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.PREVIOUS_REQUEST_LINK;
 
@@ -32,21 +31,15 @@ public final class SaveUpdatedUserCommand implements Command {
     /**
      * extracts AddressDTO objects from request.
      */
-    private final Extractor<AddressDTO> addressDtoExtractor
-            = new AddressDtoExtractor();
+    private final Extractor<AddressDTO> addressDtoExtractor = new AddressDtoExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
         UserDTO userDTO = userDtoExtractor.extract(request);
-        PersonalInfoDTO personalInfoDTO = personalInfoDtoExtractor.extract(
-                request);
+        PersonalInfoDTO personalInfoDTO = personalInfoDtoExtractor.extract(request);
         AddressDTO addressDTO = addressDtoExtractor.extract(request);
         personalInfoDTO.setAddressDTO(addressDTO);
         userDTO.setPersonalInfoDTO(personalInfoDTO);
-
-        userDTO.setCart(
-                service.readById(userDTO.getHealthCareCardNumber()).getCart());
-
         service.update(userDTO);
         return request.getParameter(PREVIOUS_REQUEST_LINK);
     }

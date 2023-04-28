@@ -4,8 +4,7 @@ import by.academy.pharmacy.controller.command.Command;
 import by.academy.pharmacy.service.database.MedicineDaoService;
 import by.academy.pharmacy.service.database.impl.MedicineDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.MEDICINE_ID_DB;
 import static by.academy.pharmacy.entity.Constant.PREVIOUS_REQUEST_LINK;

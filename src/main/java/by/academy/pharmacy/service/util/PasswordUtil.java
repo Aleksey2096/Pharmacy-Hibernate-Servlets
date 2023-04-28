@@ -56,10 +56,8 @@ public final class PasswordUtil {
                                        final byte[] salt) {
         byte[] hash = null;
         try {
-            PBEKeySpec spec = new PBEKeySpec(newChars, salt, ITERATIONS,
-                    KEY_LENGTH);
-            SecretKeyFactory skf = SecretKeyFactory.getInstance(
-                    PBKDF_2_WITH_HMAC_SHA_1);
+            PBEKeySpec spec = new PBEKeySpec(newChars, salt, ITERATIONS, KEY_LENGTH);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(PBKDF_2_WITH_HMAC_SHA_1);
             hash = skf.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException newE) {
             newE.printStackTrace();
@@ -78,10 +76,8 @@ public final class PasswordUtil {
     public static boolean validatePassword(final String inputPassword,
                                            final String storedPassword) {
         try {
-            byte[] salt = Hex.decodeHex(
-                    storedPassword.substring(0, storedPassword.length() / 2));
-            byte[] hash = Hex.decodeHex(
-                    storedPassword.substring(storedPassword.length() / 2));
+            byte[] salt = Hex.decodeHex(storedPassword.substring(0, storedPassword.length() / 2));
+            byte[] hash = Hex.decodeHex(storedPassword.substring(storedPassword.length() / 2));
             byte[] testHash = generateHash(inputPassword.toCharArray(), salt);
             int diff = hash.length ^ testHash.length;
             for (int i = 0; i < hash.length && i < testHash.length; i++) {

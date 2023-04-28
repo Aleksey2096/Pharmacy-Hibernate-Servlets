@@ -1,28 +1,25 @@
 package by.academy.pharmacy.controller.filter;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 import static by.academy.pharmacy.entity.Constant.INDEX_JSP;
 
 public final class SecurityFilter implements Filter {
     @Override
-    public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
-                         final FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response,
+                         final FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse
-                = (HttpServletResponse) response;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         request.getServletContext().getRequestDispatcher(INDEX_JSP)
-                .forward(httpServletRequest,
-                        httpServletResponse);
+                .forward(httpServletRequest, httpServletResponse);
         chain.doFilter(request, response);
     }
 }

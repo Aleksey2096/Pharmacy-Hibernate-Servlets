@@ -37,7 +37,7 @@ public final class PersonalInfoDTO implements Serializable {
      */
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private AddressDTO addressDTO = new AddressDTO();
+    private AddressDTO addressDTO;
     /**
      * Contains users' phone number.
      */

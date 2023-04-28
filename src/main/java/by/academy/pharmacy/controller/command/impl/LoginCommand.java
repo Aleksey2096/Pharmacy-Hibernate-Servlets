@@ -6,8 +6,7 @@ import by.academy.pharmacy.entity.SessionUser;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
 import by.academy.pharmacy.service.util.SessionUserUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.ERROR_LOGIN_PASS_MESSAGE_KEY;
 import static by.academy.pharmacy.entity.Constant.JSP_COMMON_LOGIN_JSP;
@@ -26,16 +25,14 @@ public final class LoginCommand implements Command {
         UserDTO userDTO = service.login(request.getParameter(LOGIN),
                 request.getParameter(PASSWORD));
         if (userDTO != null) {
-            SessionUser sessionUser = SessionUserUtil.convertToSessionUser(
-                    userDTO);
+            SessionUser sessionUser = SessionUserUtil.convertToSessionUser(userDTO);
             request.getSession().setAttribute(USER, sessionUser);
             page = request.getParameter(PREVIOUS_REQUEST_LINK);
         } else {
             request.setAttribute(PREVIOUS_REQUEST_LINK,
                     request.getParameter(PREVIOUS_REQUEST_LINK));
             page = JSP_COMMON_LOGIN_JSP;
-            request.setAttribute(ERROR_LOGIN_PASS_MESSAGE_KEY,
-                    TEXT_LOGIN_ERROR);
+            request.setAttribute(ERROR_LOGIN_PASS_MESSAGE_KEY, TEXT_LOGIN_ERROR);
         }
         return page;
     }

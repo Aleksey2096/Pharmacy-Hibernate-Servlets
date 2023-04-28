@@ -1,5 +1,7 @@
 package by.academy.pharmacy.service.database.impl;
 
+import by.academy.pharmacy.converter.Converter;
+import by.academy.pharmacy.converter.impl.ProducerConverter;
 import by.academy.pharmacy.dao.DAO;
 import by.academy.pharmacy.dao.ProducerDAO;
 import by.academy.pharmacy.dao.impl.ProducerDaoImpl;
@@ -8,13 +10,10 @@ import by.academy.pharmacy.entity.OrderObject;
 import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.entity.ProducerEntity;
 import by.academy.pharmacy.service.database.ProducerDaoService;
-import by.academy.pharmacy.service.mapping.Converter;
-import by.academy.pharmacy.service.mapping.impl.ProducerConverter;
 
 public final class ProducerDaoServiceImpl implements ProducerDaoService {
     private final ProducerDAO dao = new ProducerDaoImpl();
-    private final Converter<ProducerEntity, ProducerDTO> converter
-            = new ProducerConverter();
+    private final Converter<ProducerEntity, ProducerDTO> converter = new ProducerConverter();
 
     @Override
     public DAO<ProducerEntity, Long> getDAO() {
@@ -28,11 +27,9 @@ public final class ProducerDaoServiceImpl implements ProducerDaoService {
 
     @Override
     public PaginationObject<ProducerDTO> readAllWithParameters(
-            final PaginationObject<ProducerEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<ProducerEntity> pagination, final OrderObject orderObject,
             final String searchValue) {
         return converter.convertToDtoPaginationObject(
-                dao.selectAllWithParameters(pagination, orderObject,
-                        searchValue));
+                dao.selectAllWithParameters(pagination, orderObject, searchValue));
     }
 }

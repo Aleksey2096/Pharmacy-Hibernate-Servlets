@@ -1,11 +1,12 @@
 package by.academy.pharmacy.controller.filter;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+
 import java.io.IOException;
 
 import static by.academy.pharmacy.entity.Constant.ENCODING;
@@ -26,10 +27,8 @@ public final class EncodingFilter implements Filter {
     }
 
     @Override
-    public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
-                         final FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response,
+                         final FilterChain chain) throws IOException, ServletException {
         String existingEncoding = request.getCharacterEncoding();
         if (encoding != null && !encoding.equalsIgnoreCase(existingEncoding)) {
             request.setCharacterEncoding(encoding);

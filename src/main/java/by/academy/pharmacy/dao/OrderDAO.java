@@ -7,12 +7,10 @@ import by.academy.pharmacy.entity.UserEntity;
 
 public interface OrderDAO extends DAO<OrderEntity, Long> {
     PaginationObject<OrderEntity> selectAllWithParameters(
-            final PaginationObject<OrderEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<OrderEntity> pagination, final OrderObject orderObject,
             final String searchValue);
 
     PaginationObject<OrderEntity> selectAllWithParametersByUser(
-            final PaginationObject<OrderEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<OrderEntity> pagination, final OrderObject orderObject,
             final String searchValue, final UserEntity userEntity);
 }

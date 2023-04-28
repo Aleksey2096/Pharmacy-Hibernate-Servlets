@@ -40,7 +40,7 @@ CREATE TABLE medicine_products
 
 CREATE TABLE addresses
 (
-    health_care_card_number BIGINT       NOT NULL UNIQUE,
+    health_care_card_number BIGINT       NOT NULL,
     postcode                INTEGER      NOT NULL,
     city                    VARCHAR(255) NOT NULL,
     street                  VARCHAR(255) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE addresses
 
 CREATE TABLE personal_info
 (
-    health_care_card_number BIGINT       NOT NULL UNIQUE,
+    health_care_card_number BIGINT       NOT NULL,
     surname                 VARCHAR(255) NOT NULL,
     name                    VARCHAR(255) NOT NULL,
     date_of_birth           DATE         NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE personal_info
 
 CREATE TABLE users
 (
-    health_care_card_number BIGINT       NOT NULL UNIQUE,
+    health_care_card_number BIGINT       NOT NULL,
     login                   VARCHAR(255) NOT NULL UNIQUE,
     password                CHAR(64)     NOT NULL,
     /*

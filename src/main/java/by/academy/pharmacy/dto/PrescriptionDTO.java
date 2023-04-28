@@ -22,6 +22,8 @@ public final class PrescriptionDTO implements Serializable {
     /**
      * Contains user who has the prescription.
      */
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private UserDTO userDTO;
     /**
      * Contains information about medicine product.
@@ -32,7 +34,7 @@ public final class PrescriptionDTO implements Serializable {
     /**
      * Contains amount of prescribed medicine.
      */
-    private int amount;
+    private Integer amount;
     /**
      * Contains date of prescription.
      */

@@ -8,8 +8,7 @@ import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.MedicineProductDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.JSP_COMMON_LOGIN_JSP;
 import static by.academy.pharmacy.entity.Constant.MEDICINE_PRODUCT_ID_DB;
@@ -34,11 +33,10 @@ public final class AddToCartCommand implements Command {
                     request.getParameter(PREVIOUS_REQUEST_LINK));
             return JSP_COMMON_LOGIN_JSP;
         }
-        MedicineProductDTO medicineProductDTO
-                = medicineProductDaoService.readById(
+        MedicineProductDTO medicineProductDTO = medicineProductDaoService.readById(
                 RequestDataUtil.getLong(MEDICINE_PRODUCT_ID_DB, request));
-        service.addToCart(((SessionUser) request.getSession()
-                        .getAttribute(USER)).getHealthCareCardNumber(),
+        service.addToCart(
+                ((SessionUser) request.getSession().getAttribute(USER)).getHealthCareCardNumber(),
                 medicineProductDTO);
         return null;
     }

@@ -29,7 +29,7 @@ public final class OrderDTO implements Serializable {
      */
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private UserDTO userDTO = new UserDTO();
+    private UserDTO userDTO;
     /**
      * Contains medicine storage with medicine which was ordered by user.
      */
@@ -39,7 +39,7 @@ public final class OrderDTO implements Serializable {
     /**
      * Contains ordered amount of the medicine.
      */
-    private int amount;
+    private Integer amount;
     /**
      * Contains price of the medicine product, while purchasing.
      */

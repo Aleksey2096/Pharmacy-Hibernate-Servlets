@@ -32,7 +32,7 @@ public final class MedicineDTO implements Serializable {
      */
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private ProducerDTO producerDTO = new ProducerDTO();
+    private ProducerDTO producerDTO;
     private Date approvalDate;
     private String medicineImagePath;
 }

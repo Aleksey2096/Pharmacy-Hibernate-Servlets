@@ -9,14 +9,17 @@ import by.academy.pharmacy.entity.UserEntity;
 import java.util.Set;
 
 public interface UserDAO extends DAO<UserEntity, Long> {
-	UserEntity selectByLogin(String login);
+    UserEntity selectByLogin(String login);
 
-	Set<MedicineProductEntity> selectCart(Long healthCareCardNumber);
+    Set<MedicineProductEntity> selectCart(Long healthCareCardNumber);
 
-	Set<PrescriptionEntity> selectPrescriptions(Long healthCareCardNumber);
+    void addToCart(Long healthCareCardNumber, MedicineProductEntity medicineProductEntity);
 
-	PaginationObject<UserEntity> selectAllWithParameters(
-			final PaginationObject<UserEntity> pagination,
-			final OrderObject orderObject,
-			final String searchValue);
+    void deleteFromCart(Long healthCareCardNumber, MedicineProductEntity medicineProductEntity);
+
+    Set<PrescriptionEntity> selectPrescriptions(Long healthCareCardNumber);
+
+    PaginationObject<UserEntity> selectAllWithParameters(
+            final PaginationObject<UserEntity> pagination, final OrderObject orderObject,
+            final String searchValue);
 }

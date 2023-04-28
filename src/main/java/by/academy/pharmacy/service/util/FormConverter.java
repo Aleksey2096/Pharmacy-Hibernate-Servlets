@@ -17,5 +17,4 @@ public final class FormConverter implements AttributeConverter<Form, String> {
     public Form convertToEntityAttribute(final String dbData) {
         return Form.valueOf(dbData.toUpperCase());
     }
-
 }

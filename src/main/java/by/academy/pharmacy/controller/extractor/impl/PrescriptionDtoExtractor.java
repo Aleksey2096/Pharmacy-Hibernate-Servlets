@@ -3,15 +3,13 @@ package by.academy.pharmacy.controller.extractor.impl;
 import by.academy.pharmacy.controller.extractor.Extractor;
 import by.academy.pharmacy.dto.PrescriptionDTO;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.AMOUNT;
 import static by.academy.pharmacy.entity.Constant.DATE;
 import static by.academy.pharmacy.entity.Constant.PRESCRIPTION_ID_DB;
 
-public final class PrescriptionDtoExtractor
-        implements Extractor<PrescriptionDTO> {
+public final class PrescriptionDtoExtractor implements Extractor<PrescriptionDTO> {
     @Override
     public PrescriptionDTO extract(final HttpServletRequest request) {
         return PrescriptionDTO.builder()

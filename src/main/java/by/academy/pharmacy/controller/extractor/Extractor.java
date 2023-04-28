@@ -1,6 +1,6 @@
 package by.academy.pharmacy.controller.extractor;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @param <T> concrete dto object type to extract from request.

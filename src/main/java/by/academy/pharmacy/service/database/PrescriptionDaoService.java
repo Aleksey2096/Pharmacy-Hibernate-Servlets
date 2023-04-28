@@ -9,7 +9,6 @@ import by.academy.pharmacy.entity.PrescriptionEntity;
 public interface PrescriptionDaoService
         extends DaoService<PrescriptionEntity, PrescriptionDTO, Long> {
     PaginationObject<PrescriptionDTO> readAllWithParametersByUser(
-            final PaginationObject<PrescriptionEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<PrescriptionEntity> pagination, final OrderObject orderObject,
             final String searchValue, final UserDTO userDTO);
 }

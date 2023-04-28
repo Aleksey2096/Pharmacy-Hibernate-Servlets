@@ -7,12 +7,10 @@ import by.academy.pharmacy.entity.PaginationObject;
 
 public interface MedicineProductDAO extends DAO<MedicineProductEntity, Long> {
     PaginationObject<MedicineProductEntity> selectAllWithParameters(
-            final PaginationObject<MedicineProductEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<MedicineProductEntity> pagination, final OrderObject orderObject,
             final String searchValue);
 
     PaginationObject<MedicineProductEntity> selectAllWithParametersByMedicine(
-            final PaginationObject<MedicineProductEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<MedicineProductEntity> pagination, final OrderObject orderObject,
             final String searchValue, final MedicineEntity medicineEntity);
 }

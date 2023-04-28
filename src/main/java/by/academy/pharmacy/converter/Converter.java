@@ -1,4 +1,4 @@
-package by.academy.pharmacy.service.mapping;
+package by.academy.pharmacy.converter;
 
 import by.academy.pharmacy.entity.PaginationObject;
 
@@ -33,15 +33,13 @@ public interface Converter<E, D> {
      * @param pagination result of dao pagination method with the list of entities.
      * @return PaginationObject with records list converted to DTO entities.
      */
-    default PaginationObject<D> convertToDtoPaginationObject(
-            final PaginationObject<E> pagination) {
+    default PaginationObject<D> convertToDtoPaginationObject(final PaginationObject<E> pagination) {
         PaginationObject<D> paginationObject = new PaginationObject<>();
         paginationObject.setCurrentPage(pagination.getCurrentPage());
         paginationObject.setPagesNum(pagination.getPagesNum());
         paginationObject.setRecordsPerPage(pagination.getRecordsPerPage());
-        paginationObject
-                .setRecords(new ArrayList<>(
-                        convertToDtoCollection(pagination.getRecords())));
+        paginationObject.setRecords(
+                new ArrayList<>(convertToDtoCollection(pagination.getRecords())));
         return paginationObject;
     }
 }

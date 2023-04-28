@@ -1,11 +1,10 @@
-package by.academy.pharmacy.service.mapping.impl;
+package by.academy.pharmacy.converter.impl;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dto.AddressDTO;
 import by.academy.pharmacy.entity.AddressEntity;
-import by.academy.pharmacy.service.mapping.Converter;
 
-public final class AddressConverter
-        implements Converter<AddressEntity, AddressDTO> {
+public final class AddressConverter implements Converter<AddressEntity, AddressDTO> {
     @Override
     public AddressDTO convertToDto(final AddressEntity entity) {
         if (entity == null) {

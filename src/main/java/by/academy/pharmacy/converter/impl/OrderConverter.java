@@ -1,18 +1,17 @@
-package by.academy.pharmacy.service.mapping.impl;
+package by.academy.pharmacy.converter.impl;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dto.MedicineProductDTO;
 import by.academy.pharmacy.dto.OrderDTO;
 import by.academy.pharmacy.dto.UserDTO;
 import by.academy.pharmacy.entity.MedicineProductEntity;
 import by.academy.pharmacy.entity.OrderEntity;
 import by.academy.pharmacy.entity.UserEntity;
-import by.academy.pharmacy.service.mapping.Converter;
 
 public final class OrderConverter implements Converter<OrderEntity, OrderDTO> {
-    private final Converter<UserEntity, UserDTO> userConverter
-            = new UserConverter();
-    private final Converter<MedicineProductEntity, MedicineProductDTO>
-            medicineProductConverter = new MedicineProductConverter();
+    private final Converter<UserEntity, UserDTO> userConverter = new UserConverter();
+    private final Converter<MedicineProductEntity, MedicineProductDTO> medicineProductConverter
+            = new MedicineProductConverter();
 
     @Override
     public OrderDTO convertToDto(final OrderEntity entity) {
@@ -23,8 +22,8 @@ public final class OrderConverter implements Converter<OrderEntity, OrderDTO> {
                 .id(entity.getId())
                 .localDateTime(entity.getLocalDateTime())
                 .userDTO(userConverter.convertToDto(entity.getUserEntity()))
-                .medicineProductDTO(medicineProductConverter.convertToDto(
-                        entity.getMedicineProductEntity()))
+                .medicineProductDTO(
+                        medicineProductConverter.convertToDto(entity.getMedicineProductEntity()))
                 .amount(entity.getAmount())
                 .price(entity.getPrice())
                 .paymentCardNumber(entity.getPaymentCardNumber())
@@ -42,8 +41,8 @@ public final class OrderConverter implements Converter<OrderEntity, OrderDTO> {
                 .id(dto.getId())
                 .localDateTime(dto.getLocalDateTime())
                 .userEntity(userConverter.convertToEntity(dto.getUserDTO()))
-                .medicineProductEntity(medicineProductConverter.convertToEntity(
-                        dto.getMedicineProductDTO()))
+                .medicineProductEntity(
+                        medicineProductConverter.convertToEntity(dto.getMedicineProductDTO()))
                 .amount(dto.getAmount())
                 .price(dto.getPrice())
                 .paymentCardNumber(dto.getPaymentCardNumber())

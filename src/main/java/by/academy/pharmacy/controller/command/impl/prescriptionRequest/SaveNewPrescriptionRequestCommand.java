@@ -10,8 +10,7 @@ import by.academy.pharmacy.service.database.PrescriptionRequestDaoService;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.PrescriptionRequestDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.PREVIOUS_REQUEST_LINK;
 import static by.academy.pharmacy.entity.Constant.USER;
@@ -20,8 +19,7 @@ public final class SaveNewPrescriptionRequestCommand implements Command {
     /**
      * service working with dao layer.
      */
-    private final PrescriptionRequestDaoService service
-            = new PrescriptionRequestDaoServiceImpl();
+    private final PrescriptionRequestDaoService service = new PrescriptionRequestDaoServiceImpl();
     /**
      * service working with dao layer.
      */
@@ -34,12 +32,9 @@ public final class SaveNewPrescriptionRequestCommand implements Command {
 
     @Override
     public String execute(final HttpServletRequest request) {
-        PrescriptionRequestDTO prescriptionRequestDTO = extractor.extract(
-                request);
-        SessionUser sessionUser = (SessionUser) request.getSession()
-                .getAttribute(USER);
-        UserDTO userDTO = userService.readById(
-                sessionUser.getHealthCareCardNumber());
+        PrescriptionRequestDTO prescriptionRequestDTO = extractor.extract(request);
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute(USER);
+        UserDTO userDTO = userService.readById(sessionUser.getHealthCareCardNumber());
         prescriptionRequestDTO.setUserDTO(userDTO);
         service.create(prescriptionRequestDTO);
         return request.getParameter(PREVIOUS_REQUEST_LINK);

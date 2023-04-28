@@ -3,8 +3,7 @@ package by.academy.pharmacy.controller.extractor.impl;
 import by.academy.pharmacy.controller.extractor.Extractor;
 import by.academy.pharmacy.dto.ProducerDTO;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COMPANY_NAME;
 import static by.academy.pharmacy.entity.Constant.COUNTRY;

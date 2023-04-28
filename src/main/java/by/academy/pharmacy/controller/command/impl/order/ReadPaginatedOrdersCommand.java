@@ -9,8 +9,7 @@ import by.academy.pharmacy.entity.OrderObject;
 import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.service.database.OrderDaoService;
 import by.academy.pharmacy.service.database.impl.OrderDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COMMAND;
 import static by.academy.pharmacy.entity.Constant.JSP_ADMINISTRATOR_ORDERS_INDEX_JSP;
@@ -26,26 +25,23 @@ public final class ReadPaginatedOrdersCommand implements Command {
     /**
      * extracts PaginationObject from request.
      */
-    private final Extractor<PaginationObject<OrderEntity>>
-            paginationObjectExtractor = new PaginationObjectExtractor<>();
+    private final Extractor<PaginationObject<OrderEntity>> paginationObjectExtractor
+            = new PaginationObjectExtractor<>();
     /**
      * extracts OrderObject from request.
      */
-    private final Extractor<OrderObject> orderObjectExtractor
-            = new OrderObjectExtractor();
+    private final Extractor<OrderObject> orderObjectExtractor = new OrderObjectExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
         request.setAttribute(COMMAND, request.getParameter(COMMAND));
-        PaginationObject<OrderEntity> paginationObject
-                = paginationObjectExtractor.extract(request);
+        PaginationObject<OrderEntity> paginationObject = paginationObjectExtractor.extract(request);
         OrderObject orderObject = orderObjectExtractor.extract(request);
         String searchValue = request.getParameter(SEARCH_VALUE);
         request.setAttribute(SEARCH_VALUE, searchValue);
         request.setAttribute(ORDER_OBJECT, orderObject);
         request.setAttribute(ORDERS,
-                service.readAllWithParameters(paginationObject, orderObject,
-                        searchValue));
+                service.readAllWithParameters(paginationObject, orderObject, searchValue));
         return JSP_ADMINISTRATOR_ORDERS_INDEX_JSP;
     }
 }

@@ -6,8 +6,7 @@ import by.academy.pharmacy.entity.Role;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.HEALTH_CARE_CARD_NUMBER_DB;
 import static by.academy.pharmacy.entity.Constant.JSP_ADMINISTRATOR_USERS_EDIT_JSP;
@@ -27,8 +26,7 @@ public final class GetUserEditFormCommand implements Command {
                 RequestDataUtil.getLong(HEALTH_CARE_CARD_NUMBER_DB, request));
         request.setAttribute(USER, userDTO);
         request.setAttribute(ROLES, Role.values());
-        request.setAttribute(PREVIOUS_REQUEST_LINK,
-                request.getParameter(PREVIOUS_REQUEST_LINK));
+        request.setAttribute(PREVIOUS_REQUEST_LINK, request.getParameter(PREVIOUS_REQUEST_LINK));
         return JSP_ADMINISTRATOR_USERS_EDIT_JSP;
     }
 }

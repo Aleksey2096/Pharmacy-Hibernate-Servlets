@@ -5,8 +5,7 @@ import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.entity.PrescriptionRequestEntity;
 import by.academy.pharmacy.entity.UserEntity;
 
-public interface PrescriptionRequestDAO
-        extends DAO<PrescriptionRequestEntity, Long> {
+public interface PrescriptionRequestDAO extends DAO<PrescriptionRequestEntity, Long> {
     PaginationObject<PrescriptionRequestEntity> selectAllWithParameters(
             final PaginationObject<PrescriptionRequestEntity> pagination,
             final OrderObject orderObject, final String searchValue);
@@ -17,6 +16,5 @@ public interface PrescriptionRequestDAO
 
     PaginationObject<PrescriptionRequestEntity> selectAllWithParametersByUser(
             final PaginationObject<PrescriptionRequestEntity> pagination,
-            final OrderObject orderObject, final String searchValue,
-            final UserEntity userEntity);
+            final OrderObject orderObject, final String searchValue, final UserEntity userEntity);
 }

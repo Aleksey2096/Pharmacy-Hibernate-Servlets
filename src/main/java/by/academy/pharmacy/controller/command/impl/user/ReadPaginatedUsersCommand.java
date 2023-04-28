@@ -9,8 +9,7 @@ import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.entity.UserEntity;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COMMAND;
 import static by.academy.pharmacy.entity.Constant.JSP_ADMINISTRATOR_USERS_INDEX_JSP;
@@ -26,26 +25,23 @@ public final class ReadPaginatedUsersCommand implements Command {
     /**
      * extracts PaginationObject from request.
      */
-    private final Extractor<PaginationObject<UserEntity>>
-            paginationObjectExtractor = new PaginationObjectExtractor<>();
+    private final Extractor<PaginationObject<UserEntity>> paginationObjectExtractor
+            = new PaginationObjectExtractor<>();
     /**
      * extracts OrderObject from request.
      */
-    private final Extractor<OrderObject> orderObjectExtractor
-            = new OrderObjectExtractor();
+    private final Extractor<OrderObject> orderObjectExtractor = new OrderObjectExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
         request.setAttribute(COMMAND, request.getParameter(COMMAND));
-        PaginationObject<UserEntity> paginationObject
-                = paginationObjectExtractor.extract(request);
+        PaginationObject<UserEntity> paginationObject = paginationObjectExtractor.extract(request);
         OrderObject orderObject = orderObjectExtractor.extract(request);
         String searchValue = request.getParameter(SEARCH_VALUE);
         request.setAttribute(SEARCH_VALUE, searchValue);
         request.setAttribute(ORDER_OBJECT, orderObject);
         request.setAttribute(USERS,
-                service.readAllWithParameters(paginationObject, orderObject,
-                        searchValue));
+                service.readAllWithParameters(paginationObject, orderObject, searchValue));
         return JSP_ADMINISTRATOR_USERS_INDEX_JSP;
     }
 }

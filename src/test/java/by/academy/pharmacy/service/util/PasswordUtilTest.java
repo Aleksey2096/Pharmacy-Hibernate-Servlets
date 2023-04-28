@@ -8,20 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PasswordUtilTest {
-	@Test
-	public void testPasswordHashingPositive() {
-		String hashedPassword = PasswordUtil.generateStrongPasswordHash(
-				STRONG_PASSWORD);
-		assertTrue(
-				PasswordUtil.validatePassword(STRONG_PASSWORD, hashedPassword));
-	}
+    @Test
+    public void testPasswordHashingPositive() {
+        String hashedPassword = PasswordUtil.generateStrongPasswordHash(STRONG_PASSWORD);
+        assertTrue(PasswordUtil.validatePassword(STRONG_PASSWORD, hashedPassword));
+    }
 
-	@Test
-	public void testPasswordHashingNegative() {
-		String hashedPassword = PasswordUtil.generateStrongPasswordHash(
-				STRONG_PASSWORD);
-		assertFalse(
-				PasswordUtil.validatePassword(STRONG_PASSWORD + UPDATED_STRING,
-						hashedPassword));
-	}
+    @Test
+    public void testPasswordHashingNegative() {
+        String hashedPassword = PasswordUtil.generateStrongPasswordHash(STRONG_PASSWORD);
+        assertFalse(
+                PasswordUtil.validatePassword(STRONG_PASSWORD + UPDATED_STRING, hashedPassword));
+    }
 }

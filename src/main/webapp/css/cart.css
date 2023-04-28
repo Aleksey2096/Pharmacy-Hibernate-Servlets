@@ -163,39 +163,39 @@ span.errorSpan {
 
 
 .responsive-table.carts .col-1 {
-    flex-basis: 10%;
+    flex-basis: 6%;
 }
 
 .responsive-table.carts .col-2 {
-    flex-basis: 10%;
+    flex-basis: 6%;
 }
 
 .responsive-table.carts .col-3 {
-    flex-basis: 10%;
-}
-
-.responsive-table.carts .col-4 {
-    flex-basis: 10%;
-}
-
-.responsive-table.carts .col-5 {
-    flex-basis: 10%;
-}
-
-.responsive-table.carts .col-6 {
-    flex-basis: 10%;
-}
-
-.responsive-table.carts .col-7 {
     flex-basis: 20%;
 }
 
+.responsive-table.carts .col-4 {
+    flex-basis: 9%;
+}
+
+.responsive-table.carts .col-5 {
+    flex-basis: 17%;
+}
+
+.responsive-table.carts .col-6 {
+    flex-basis: 8%;
+}
+
+.responsive-table.carts .col-7 {
+    flex-basis: 18%;
+}
+
 .responsive-table.carts .col-8 {
-    flex-basis: 10%;
+    flex-basis: 8%;
 }
 
 .responsive-table.carts .col-9 {
-    flex-basis: 10%;
+    flex-basis: 8%;
 }
 
 
@@ -208,15 +208,15 @@ span.errorSpan {
 }
 
 .responsive-table.cartOrders .col-3 {
-    flex-basis: 25%;
+    flex-basis: 32%;
 }
 
 .responsive-table.cartOrders .col-4 {
-    flex-basis: 22%;
+    flex-basis: 20%;
 }
 
 .responsive-table.cartOrders .col-5 {
-    flex-basis: 25%;
+    flex-basis: 20%;
 }
 
 .responsive-table.cartOrders .col-6 {

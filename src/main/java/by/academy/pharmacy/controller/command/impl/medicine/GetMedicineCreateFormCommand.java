@@ -4,8 +4,8 @@ import by.academy.pharmacy.controller.command.Command;
 import by.academy.pharmacy.dto.ProducerDTO;
 import by.academy.pharmacy.service.database.ProducerDaoService;
 import by.academy.pharmacy.service.database.impl.ProducerDaoServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 import static by.academy.pharmacy.entity.Constant.JSP_PHARMACIST_MEDICINES_NEW_JSP;
@@ -21,8 +21,7 @@ public final class GetMedicineCreateFormCommand implements Command {
 
     @Override
     public String execute(final HttpServletRequest request) {
-        request.setAttribute(PREVIOUS_REQUEST_LINK,
-                request.getParameter(PREVIOUS_REQUEST_LINK));
+        request.setAttribute(PREVIOUS_REQUEST_LINK, request.getParameter(PREVIOUS_REQUEST_LINK));
         Set<ProducerDTO> producerDTOs = producerDaoService.readAll();
         request.setAttribute(PRODUCERS, producerDTOs);
         return JSP_PHARMACIST_MEDICINES_NEW_JSP;

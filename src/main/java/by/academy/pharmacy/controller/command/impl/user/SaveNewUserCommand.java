@@ -10,8 +10,7 @@ import by.academy.pharmacy.dto.PersonalInfoDTO;
 import by.academy.pharmacy.dto.UserDTO;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.JSP_COMMON_LOGIN_JSP;
 import static by.academy.pharmacy.entity.Constant.LOGIN_MESSAGE;
@@ -36,8 +35,7 @@ public final class SaveNewUserCommand implements Command {
     /**
      * extracts UserDTO objects from request.
      */
-    private final Extractor<AddressDTO> addressDtoExtractor
-            = new AddressDtoExtractor();
+    private final Extractor<AddressDTO> addressDtoExtractor = new AddressDtoExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
@@ -49,8 +47,7 @@ public final class SaveNewUserCommand implements Command {
             page = JSP_COMMON_LOGIN_JSP;
         }
         UserDTO userDTO = extractor.extract(request);
-        PersonalInfoDTO personalInfoDTO = personalInfoDtoExtractor.extract(
-                request);
+        PersonalInfoDTO personalInfoDTO = personalInfoDtoExtractor.extract(request);
         personalInfoDTO.setAddressDTO(addressDtoExtractor.extract(request));
         userDTO.setPersonalInfoDTO(personalInfoDTO);
         service.create(userDTO);

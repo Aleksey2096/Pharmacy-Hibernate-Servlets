@@ -2,20 +2,21 @@ package by.academy.pharmacy.service;
 
 import by.academy.pharmacy.entity.Country;
 import by.academy.pharmacy.entity.ProducerEntity;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
 import java.io.BufferedReader;
 import java.security.Principal;
 import java.sql.Connection;
@@ -50,8 +51,7 @@ import static by.academy.pharmacy.service.TestConstant.URL;
 import static by.academy.pharmacy.service.TestConstant.USERNAME;
 
 public final class MockUtil {
-    private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle(
-            TEST_PROPERTIES_URL);
+    private static final ResourceBundle PROPERTIES = ResourceBundle.getBundle(TEST_PROPERTIES_URL);
     public static final String URL_STRING = PROPERTIES.getString(URL);
     public static final String USER = PROPERTIES.getString(USERNAME);
     public static final String PASS = PROPERTIES.getString(PASSWORD);
@@ -73,19 +73,15 @@ public final class MockUtil {
         return producer;
     }
 
-    public static void clearProducersTable(final Connection connection)
-            throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-                CLEAR_PRODUCERS_TABLE_SQL)) {
+    public static void clearProducersTable(final Connection connection) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(CLEAR_PRODUCERS_TABLE_SQL)) {
             statement.executeUpdate();
         }
     }
 
-    public static ProducerEntity selectProducerById(final long id,
-                                                    final Connection connection)
+    public static ProducerEntity selectProducerById(final long id, final Connection connection)
             throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-                SELECT_PRODUCER_BY_ID_SQL)) {
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_PRODUCER_BY_ID_SQL)) {
             statement.setLong(FIRST_INDEX, id);
             ResultSet resultset = statement.executeQuery();
             ProducerEntity producer = null;
@@ -96,32 +92,26 @@ public final class MockUtil {
         }
     }
 
-    public static void insertProducer(final ProducerEntity producer,
-                                      final Connection connection)
+    public static void insertProducer(final ProducerEntity producer, final Connection connection)
             throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(
-                INSERT_PRODUCER_SQL,
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCER_SQL,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(FIRST_INDEX, producer.getCompanyName());
             statement.setString(SECOND_INDEX, producer.getCountry().getCode());
-            statement.setDate(THIRD_INDEX,
-                    new java.sql.Date(producer.getCreationDate().getTime()));
+            statement.setDate(THIRD_INDEX, new java.sql.Date(producer.getCreationDate().getTime()));
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
-                producer.setId(
-                        statement.getGeneratedKeys().getLong(FIRST_INDEX));
+                producer.setId(statement.getGeneratedKeys().getLong(FIRST_INDEX));
             }
         }
     }
 
-    private static ProducerEntity createProducer(final ResultSet resultset)
-            throws SQLException {
+    private static ProducerEntity createProducer(final ResultSet resultset) throws SQLException {
         ProducerEntity producer = new ProducerEntity();
         producer.setId(resultset.getLong(ID_COLUMN_TITLE));
         producer.setCompanyName(resultset.getString(COMPANY_NAME_COLUMN_TITLE));
-        producer.setCountry(Country.valueOfCode(
-                resultset.getString(COUNTRY_CODE_COLUMN_TITLE)));
+        producer.setCountry(Country.valueOfCode(resultset.getString(COUNTRY_CODE_COLUMN_TITLE)));
         producer.setCreationDate(resultset.getDate(CREATION_DATE_COLUMN_TITLE));
         return producer;
     }
@@ -133,9 +123,9 @@ public final class MockUtil {
         System.out.println(request.getParameter("name"));
     }
 
-    public static HttpServletRequest getMockRequest(
-            final Map<String, String[]> params) {
+    public static HttpServletRequest getMockRequest(final Map<String, String[]> params) {
         return new HttpServletRequest() {
+
             @Override
             public Map<String, String[]> getParameterMap() {
                 return params;
@@ -151,7 +141,162 @@ public final class MockUtil {
             }
 
             @Override
-            public Object getAttribute(final String name) {
+            public String getAuthType() {
+                return null;
+            }
+
+            @Override
+            public Cookie[] getCookies() {
+                return new Cookie[0];
+            }
+
+            @Override
+            public long getDateHeader(final String newS) {
+                return 0;
+            }
+
+            @Override
+            public String getHeader(final String newS) {
+                return null;
+            }
+
+            @Override
+            public Enumeration<String> getHeaders(final String newS) {
+                return null;
+            }
+
+            @Override
+            public Enumeration<String> getHeaderNames() {
+                return null;
+            }
+
+            @Override
+            public int getIntHeader(final String newS) {
+                return 0;
+            }
+
+            @Override
+            public String getMethod() {
+                return null;
+            }
+
+            @Override
+            public String getPathInfo() {
+                return null;
+            }
+
+            @Override
+            public String getPathTranslated() {
+                return null;
+            }
+
+            @Override
+            public String getContextPath() {
+                return null;
+            }
+
+            @Override
+            public String getQueryString() {
+                return null;
+            }
+
+            @Override
+            public String getRemoteUser() {
+                return null;
+            }
+
+            @Override
+            public boolean isUserInRole(final String newS) {
+                return false;
+            }
+
+            @Override
+            public Principal getUserPrincipal() {
+                return null;
+            }
+
+            @Override
+            public String getRequestedSessionId() {
+                return null;
+            }
+
+            @Override
+            public String getRequestURI() {
+                return null;
+            }
+
+            @Override
+            public StringBuffer getRequestURL() {
+                return null;
+            }
+
+            @Override
+            public String getServletPath() {
+                return null;
+            }
+
+            @Override
+            public HttpSession getSession(final boolean newB) {
+                return null;
+            }
+
+            @Override
+            public HttpSession getSession() {
+                return null;
+            }
+
+            @Override
+            public String changeSessionId() {
+                return null;
+            }
+
+            @Override
+            public boolean isRequestedSessionIdValid() {
+                return false;
+            }
+
+            @Override
+            public boolean isRequestedSessionIdFromCookie() {
+                return false;
+            }
+
+            @Override
+            public boolean isRequestedSessionIdFromURL() {
+                return false;
+            }
+
+            @Override
+            public boolean authenticate(final HttpServletResponse newHttpServletResponse) {
+                return false;
+            }
+
+            @Override
+            public void login(final String newS, final String newS1) {
+
+            }
+
+            @Override
+            public void logout() {
+
+            }
+
+            @Override
+            public Collection<Part> getParts() {
+                return null;
+            }
+
+            @Override
+            public Part getPart(final String newS) {
+                return null;
+            }
+
+            @Override
+            public <T extends HttpUpgradeHandler> T upgrade(final Class<T> newClass) {
+                return null;
+            }
+
+            @Override
+            public Object getAttribute(final String newS) {
                 return null;
             }
 
@@ -166,7 +311,8 @@ public final class MockUtil {
             }
 
             @Override
-            public void setCharacterEncoding(final String env) {
+            public void setCharacterEncoding(final String newS) {
+
             }
 
             @Override
@@ -195,8 +341,8 @@ public final class MockUtil {
             }
 
             @Override
-            public String[] getParameterValues(final String name) {
-                return null;
+            public String[] getParameterValues(final String newS) {
+                return new String[0];
             }
 
             @Override
@@ -235,11 +381,13 @@ public final class MockUtil {
             }
 
             @Override
-            public void setAttribute(final String name, final Object o) {
+            public void setAttribute(final String newS, final Object newO) {
+
             }
 
             @Override
-            public void removeAttribute(final String name) {
+            public void removeAttribute(final String newS) {
+
             }
 
             @Override
@@ -258,12 +406,7 @@ public final class MockUtil {
             }
 
             @Override
-            public RequestDispatcher getRequestDispatcher(final String path) {
-                return null;
-            }
-
-            @Override
-            public String getRealPath(final String path) {
+            public RequestDispatcher getRequestDispatcher(final String newS) {
                 return null;
             }
 
@@ -298,8 +441,8 @@ public final class MockUtil {
             }
 
             @Override
-            public AsyncContext startAsync(final ServletRequest servletRequest,
-                                           final ServletResponse servletResponse)
+            public AsyncContext startAsync(final ServletRequest newServletRequest,
+                                           final ServletResponse newServletResponse)
                     throws IllegalStateException {
                 return null;
             }
@@ -325,161 +468,17 @@ public final class MockUtil {
             }
 
             @Override
-            public String getAuthType() {
+            public String getRequestId() {
                 return null;
             }
 
             @Override
-            public Cookie[] getCookies() {
+            public String getProtocolRequestId() {
                 return null;
             }
 
             @Override
-            public long getDateHeader(final String name) {
-                return 0;
-            }
-
-            @Override
-            public String getHeader(final String name) {
-                return null;
-            }
-
-            @Override
-            public Enumeration<String> getHeaders(final String name) {
-                return null;
-            }
-
-            @Override
-            public Enumeration<String> getHeaderNames() {
-                return null;
-            }
-
-            @Override
-            public int getIntHeader(final String name) {
-                return 0;
-            }
-
-            @Override
-            public String getMethod() {
-                return null;
-            }
-
-            @Override
-            public String getPathInfo() {
-                return null;
-            }
-
-            @Override
-            public String getPathTranslated() {
-                return null;
-            }
-
-            @Override
-            public String getContextPath() {
-                return null;
-            }
-
-            @Override
-            public String getQueryString() {
-                return null;
-            }
-
-            @Override
-            public String getRemoteUser() {
-                return null;
-            }
-
-            @Override
-            public boolean isUserInRole(final String role) {
-                return false;
-            }
-
-            @Override
-            public Principal getUserPrincipal() {
-                return null;
-            }
-
-            @Override
-            public String getRequestedSessionId() {
-                return null;
-            }
-
-            @Override
-            public String getRequestURI() {
-                return null;
-            }
-
-            @Override
-            public StringBuffer getRequestURL() {
-                return null;
-            }
-
-            @Override
-            public String getServletPath() {
-                return null;
-            }
-
-            @Override
-            public HttpSession getSession(final boolean create) {
-                return null;
-            }
-
-            @Override
-            public HttpSession getSession() {
-                return null;
-            }
-
-            @Override
-            public String changeSessionId() {
-                return null;
-            }
-
-            @Override
-            public boolean isRequestedSessionIdValid() {
-                return false;
-            }
-
-            @Override
-            public boolean isRequestedSessionIdFromCookie() {
-                return false;
-            }
-
-            @Override
-            public boolean isRequestedSessionIdFromURL() {
-                return false;
-            }
-
-            @Override
-            public boolean isRequestedSessionIdFromUrl() {
-                return false;
-            }
-
-            @Override
-            public boolean authenticate(final HttpServletResponse response) {
-                return false;
-            }
-
-            @Override
-            public void login(final String username, final String password) {
-            }
-
-            @Override
-            public void logout() {
-            }
-
-            @Override
-            public Collection<Part> getParts() {
-                return null;
-            }
-
-            @Override
-            public Part getPart(final String name) {
-                return null;
-            }
-
-            @Override
-            public <T extends HttpUpgradeHandler> T upgrade(
-                    final Class<T> handlerClass) {
+            public ServletConnection getServletConnection() {
                 return null;
             }
         };

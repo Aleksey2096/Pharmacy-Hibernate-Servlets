@@ -10,19 +10,16 @@ import by.academy.pharmacy.entity.UserEntity;
 import java.util.Set;
 
 public interface UserDaoService extends DaoService<UserEntity, UserDTO, Long> {
-	UserDTO login(String login, String password);
+    UserDTO login(String login, String password);
 
-	PaginationObject<UserDTO> readAllWithParameters(
-			PaginationObject<UserEntity> pagination,
-			OrderObject orderObject, String searchValue);
+    PaginationObject<UserDTO> readAllWithParameters(PaginationObject<UserEntity> pagination,
+                                                    OrderObject orderObject, String searchValue);
 
-	void addToCart(Long healthCareCardNumber,
-				   MedicineProductDTO medicineProductDTO);
+    void addToCart(Long healthCareCardNumber, MedicineProductDTO medicineProductDTO);
 
-	void deleteFromCart(Long healthCareCardNumber,
-						MedicineProductDTO medicineProductDTO);
+    void deleteFromCart(Long healthCareCardNumber, MedicineProductDTO medicineProductDTO);
 
-	Set<MedicineProductDTO> readCart(Long healthCareCardNumber);
+    Set<MedicineProductDTO> readCart(Long healthCareCardNumber);
 
-	Set<PrescriptionDTO> readPrescriptions(Long healthCareCardNumber);
+    Set<PrescriptionDTO> readPrescriptions(Long healthCareCardNumber);
 }

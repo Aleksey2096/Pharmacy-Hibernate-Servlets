@@ -22,44 +22,35 @@ import static by.academy.pharmacy.entity.Constant.ID;
 import static by.academy.pharmacy.entity.Constant.USER_ENTITY;
 
 public final class PrescriptionDaoImpl implements PrescriptionDAO {
-    private final EntityManager entityManager
-            = HibernateUtil.getEntityManager();
-
     @Override
     public Class<PrescriptionEntity> getEntityClass() {
         return PrescriptionEntity.class;
     }
 
     @Override
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    @Override
     public Predicate createCommonPredicate(final Root<PrescriptionEntity> root,
-                                           final String searchValue) {
+                                           final String searchValue,
+                                           final EntityManager entityManager) {
         return createOrPredicate(searchValue, List.of(
                 root.get(ID).as(String.class),
                 root.get(AMOUNT).as(String.class),
                 root.get(DATE).as(String.class)
-        ));
+        ), entityManager);
     }
 
     @Override
     public PaginationObject<PrescriptionEntity> selectAllWithParametersByUser(
-            final PaginationObject<PrescriptionEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<PrescriptionEntity> pagination, final OrderObject orderObject,
             final String searchValue, final UserEntity userEntity) {
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.clear();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PrescriptionEntity> cq = cb.createQuery(
-                PrescriptionEntity.class);
+        CriteriaQuery<PrescriptionEntity> cq = cb.createQuery(PrescriptionEntity.class);
         Root<PrescriptionEntity> root = cq.from(PrescriptionEntity.class);
         Predicate mainPredicate;
         Predicate userPredicate = cb.equal(root.get(USER_ENTITY), userEntity);
         if (searchValue != null && !searchValue.isBlank()) {
-            mainPredicate = cb.and(createCommonPredicate(root, searchValue),
+            mainPredicate = cb.and(createCommonPredicate(root, searchValue, entityManager),
                     userPredicate);
         } else {
             mainPredicate = userPredicate;
@@ -73,21 +64,18 @@ public final class PrescriptionDaoImpl implements PrescriptionDAO {
         } else {
             cq.orderBy(cb.desc(root.get(orderObject.getOrderField())));
         }
-        TypedQuery<PrescriptionEntity> typedQuery = entityManager.createQuery(
-                cq);
+        TypedQuery<PrescriptionEntity> typedQuery = entityManager.createQuery(cq);
         typedQuery
-                .setFirstResult((pagination.getCurrentPage() - 1)
-                        * pagination.getRecordsPerPage());
+                .setFirstResult((pagination.getCurrentPage() - 1) * pagination.getRecordsPerPage());
         typedQuery.setMaxResults(pagination.getRecordsPerPage());
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         countQuery.select(cb.count(countQuery.from(PrescriptionEntity.class)));
         countQuery.where(mainPredicate);
-        pagination.setPagesNum(
-                countNumberOfPages(pagination.getRecordsPerPage(),
-                        entityManager.createQuery(countQuery)
-                                .getSingleResult()));
+        pagination.setPagesNum(countNumberOfPages(pagination.getRecordsPerPage(),
+                entityManager.createQuery(countQuery).getSingleResult()));
         pagination.setRecords(typedQuery.getResultList());
         entityManager.getTransaction().commit();
+        entityManager.close();
         return pagination;
     }
 }

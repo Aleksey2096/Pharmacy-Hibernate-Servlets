@@ -9,7 +9,7 @@
 
 
         <c:url value="/dispatcher?command=change_language" var="permanentRequestPart">
-            <c:param name="previousRequestLink" value="/dispatcher?${pageContext.request.queryString}"></c:param>
+            <c:param name="previousRequestLink" value="/dispatcher?${pageContext.request.queryString}"/>
         </c:url>
 
 
@@ -33,10 +33,6 @@
                             <label class="select-box__option" aria-hidden="aria-hidden"
                                    onclick="document.location='${permanentRequestPart}&locale=en_US'">English</label>
                         </li>
-                        <li>
-                            <label class="select-box__option" aria-hidden="aria-hidden"
-                                   onclick="document.location='${permanentRequestPart}&locale=ru_RU'">Русский</label>
-                        </li>
                     </ul>
                 </div>
             </c:when>
@@ -54,36 +50,6 @@
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden"
                                    onclick="document.location='${permanentRequestPart}&locale=de_DE'">Deutsch</label>
-                        </li>
-                        <li>
-                            <label class="select-box__option" aria-hidden="aria-hidden"
-                                   onclick="document.location='${permanentRequestPart}&locale=en_US'">English</label>
-                        </li>
-                        <li>
-                            <label class="select-box__option" aria-hidden="aria-hidden"
-                                   onclick="document.location='${permanentRequestPart}&locale=ru_RU'">Русский</label>
-                        </li>
-                    </ul>
-                </div>
-            </c:when>
-            <c:when test="${sessionScope.locale eq 'ru_RU'}">
-                <div class="select-box">
-                    <div class="select-box__current" tabindex="1">
-                        <div class="select-box__value">
-                            <input class="select-box__input" type="radio" checked="checked"/>
-                            <p class="select-box__input-text">RU</p>
-                        </div>
-                        <img class="select-box__icon" src="${pageContext.request.contextPath}/img/img_295694.svg"
-                             alt="Arrow Icon" aria-hidden="true"/>
-                    </div>
-                    <ul class="select-box__list">
-                        <li>
-                            <label class="select-box__option" aria-hidden="aria-hidden"
-                                   onclick="document.location='${permanentRequestPart}&locale=de_DE'">Deutsch</label>
-                        </li>
-                        <li>
-                            <label class="select-box__option" aria-hidden="aria-hidden"
-                                   onclick="document.location='${permanentRequestPart}&locale=es_ES'">Español</label>
                         </li>
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden"
@@ -110,10 +76,6 @@
                         <li>
                             <label class="select-box__option" aria-hidden="aria-hidden"
                                    onclick="document.location='${permanentRequestPart}&locale=es_ES'">Español</label>
-                        </li>
-                        <li>
-                            <label class="select-box__option" aria-hidden="aria-hidden"
-                                   onclick="document.location='${permanentRequestPart}&locale=ru_RU'">Русский</label>
                         </li>
                     </ul>
                 </div>

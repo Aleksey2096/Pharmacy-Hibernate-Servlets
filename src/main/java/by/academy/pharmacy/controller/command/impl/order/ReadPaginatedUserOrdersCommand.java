@@ -13,8 +13,7 @@ import by.academy.pharmacy.service.database.OrderDaoService;
 import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.OrderDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COMMAND;
 import static by.academy.pharmacy.entity.Constant.JSP_CLIENT_ORDERS_INDEX_JSP;
@@ -35,30 +34,26 @@ public final class ReadPaginatedUserOrdersCommand implements Command {
     /**
      * extracts PaginationObject from request.
      */
-    private final Extractor<PaginationObject<OrderEntity>>
-            paginationObjectExtractor = new PaginationObjectExtractor<>();
+    private final Extractor<PaginationObject<OrderEntity>> paginationObjectExtractor
+            = new PaginationObjectExtractor<>();
     /**
      * extracts OrderObject from request.
      */
-    private final Extractor<OrderObject> orderObjectExtractor
-            = new OrderObjectExtractor();
+    private final Extractor<OrderObject> orderObjectExtractor = new OrderObjectExtractor();
 
     @Override
     public String execute(final HttpServletRequest request) {
         request.setAttribute(COMMAND, request.getParameter(COMMAND));
-        PaginationObject<OrderEntity> paginationObject
-                = paginationObjectExtractor.extract(request);
+        PaginationObject<OrderEntity> paginationObject = paginationObjectExtractor.extract(request);
         OrderObject orderObject = orderObjectExtractor.extract(request);
         String searchValue = request.getParameter(SEARCH_VALUE);
-        SessionUser sessionUser = (SessionUser) request.getSession()
-                .getAttribute(USER);
-        UserDTO userDTO = userService.readById(
-                sessionUser.getHealthCareCardNumber());
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute(USER);
+        UserDTO userDTO = userService.readById(sessionUser.getHealthCareCardNumber());
         request.setAttribute(SEARCH_VALUE, searchValue);
         request.setAttribute(ORDER_OBJECT, orderObject);
         request.setAttribute(ORDERS,
-                service.readAllWithParametersByUser(paginationObject,
-                        orderObject, searchValue, userDTO));
+                service.readAllWithParametersByUser(paginationObject, orderObject, searchValue,
+                        userDTO));
         return JSP_CLIENT_ORDERS_INDEX_JSP;
     }
 }

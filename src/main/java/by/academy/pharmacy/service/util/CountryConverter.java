@@ -6,8 +6,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter
-public final class CountryConverter
-        implements AttributeConverter<Country, String> {
+public final class CountryConverter implements AttributeConverter<Country, String> {
 
     @Override
     public String convertToDatabaseColumn(final Country attribute) {

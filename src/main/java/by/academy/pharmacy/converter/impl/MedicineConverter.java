@@ -1,13 +1,12 @@
-package by.academy.pharmacy.service.mapping.impl;
+package by.academy.pharmacy.converter.impl;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dto.MedicineDTO;
 import by.academy.pharmacy.dto.ProducerDTO;
 import by.academy.pharmacy.entity.MedicineEntity;
 import by.academy.pharmacy.entity.ProducerEntity;
-import by.academy.pharmacy.service.mapping.Converter;
 
-public final class MedicineConverter
-        implements Converter<MedicineEntity, MedicineDTO> {
+public final class MedicineConverter implements Converter<MedicineEntity, MedicineDTO> {
     private final Converter<ProducerEntity, ProducerDTO> producerConverter
             = new ProducerConverter();
 
@@ -19,9 +18,8 @@ public final class MedicineConverter
         return MedicineDTO.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .isNonprescription(entity.isNonprescription())
-                .producerDTO(producerConverter.convertToDto(
-                        entity.getProducerEntity()))
+                .isNonprescription(entity.getIsNonprescription())
+                .producerDTO(producerConverter.convertToDto(entity.getProducerEntity()))
                 .approvalDate(entity.getApprovalDate())
                 .medicineImagePath(entity.getMedicineImagePath())
                 .build();
@@ -36,8 +34,7 @@ public final class MedicineConverter
                 .id(dto.getId())
                 .title(dto.getTitle())
                 .isNonprescription(dto.getIsNonprescription())
-                .producerEntity(
-                        producerConverter.convertToEntity(dto.getProducerDTO()))
+                .producerEntity(producerConverter.convertToEntity(dto.getProducerDTO()))
                 .approvalDate(dto.getApprovalDate())
                 .medicineImagePath(dto.getMedicineImagePath())
                 .build();

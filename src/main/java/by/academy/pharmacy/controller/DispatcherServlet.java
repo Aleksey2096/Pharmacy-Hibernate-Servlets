@@ -3,11 +3,11 @@ package by.academy.pharmacy.controller;
 import by.academy.pharmacy.controller.command.Command;
 import by.academy.pharmacy.controller.command.CommandFactory;
 import by.academy.pharmacy.service.util.HibernateUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -25,15 +25,13 @@ public final class DispatcherServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(final HttpServletRequest request,
-                         final HttpServletResponse response)
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(final HttpServletRequest request,
-                          final HttpServletResponse response)
+    protected void doPost(final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -46,8 +44,7 @@ public final class DispatcherServlet extends HttpServlet {
      * @throws ServletException exception
      * @throws IOException      exception
      */
-    private void processRequest(final HttpServletRequest req,
-                                final HttpServletResponse resp)
+    private void processRequest(final HttpServletRequest req, final HttpServletResponse resp)
             throws ServletException, IOException {
         Command command = CommandFactory.getInstance().defineCommand(req);
         String page = Objects.requireNonNull(command).execute(req);

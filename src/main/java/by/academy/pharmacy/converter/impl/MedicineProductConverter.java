@@ -1,10 +1,10 @@
-package by.academy.pharmacy.service.mapping.impl;
+package by.academy.pharmacy.converter.impl;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dto.MedicineDTO;
 import by.academy.pharmacy.dto.MedicineProductDTO;
 import by.academy.pharmacy.entity.MedicineEntity;
 import by.academy.pharmacy.entity.MedicineProductEntity;
-import by.academy.pharmacy.service.mapping.Converter;
 
 public final class MedicineProductConverter
         implements Converter<MedicineProductEntity, MedicineProductDTO> {
@@ -18,8 +18,7 @@ public final class MedicineProductConverter
         }
         return MedicineProductDTO.builder()
                 .id(entity.getId())
-                .medicineDTO(medicineConverter.convertToDto(
-                        entity.getMedicineEntity()))
+                .medicineDTO(medicineConverter.convertToDto(entity.getMedicineEntity()))
                 .dosage(entity.getDosage())
                 .form(entity.getForm())
                 .price(entity.getPrice())
@@ -34,8 +33,7 @@ public final class MedicineProductConverter
         }
         return MedicineProductEntity.builder()
                 .id(dto.getId())
-                .medicineEntity(
-                        medicineConverter.convertToEntity(dto.getMedicineDTO()))
+                .medicineEntity(medicineConverter.convertToEntity(dto.getMedicineDTO()))
                 .dosage(dto.getDosage())
                 .form(dto.getForm())
                 .price(dto.getPrice())

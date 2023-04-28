@@ -8,8 +8,7 @@ import by.academy.pharmacy.service.database.UserDaoService;
 import by.academy.pharmacy.service.database.impl.MedicineProductDaoServiceImpl;
 import by.academy.pharmacy.service.database.impl.UserDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.MEDICINE_PRODUCT_ID_DB;
 import static by.academy.pharmacy.entity.Constant.USER;
@@ -27,11 +26,10 @@ public final class DeleteFromCartCommand implements Command {
 
     @Override
     public String execute(final HttpServletRequest request) {
-        MedicineProductDTO medicineProductDTO
-                = medicineProductDaoService.readById(
+        MedicineProductDTO medicineProductDTO = medicineProductDaoService.readById(
                 RequestDataUtil.getLong(MEDICINE_PRODUCT_ID_DB, request));
-        service.deleteFromCart(((SessionUser) request.getSession()
-                        .getAttribute(USER)).getHealthCareCardNumber(),
+        service.deleteFromCart(
+                ((SessionUser) request.getSession().getAttribute(USER)).getHealthCareCardNumber(),
                 medicineProductDTO);
         return null;
     }

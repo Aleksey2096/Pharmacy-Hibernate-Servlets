@@ -29,64 +29,64 @@ import static by.academy.pharmacy.entity.Constant.PERSONAL_INFO_ENTITY;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = PERSONAL_INFO)
 public class PersonalInfoEntity implements Serializable {
-	/**
-	 * Contains health care card number of personal info.
-	 */
-	@Id
-	@Column(name = HEALTH_CARE_CARD_NUMBER_DB)
-	private Long healthCareCardNumber;
-	/**
-	 * Contains surname of the user.
-	 */
-	private String surname;
-	/**
-	 * Contains name of the user.
-	 */
-	private String name;
-	/**
-	 * Contains users' birthdate.
-	 */
-	@Column(name = DATE_OF_BIRTH_DB)
-	private Date birthDate;
-	/**
-	 * Contains users' address.
-	 */
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	@OneToOne(cascade = CascadeType.ALL)
-	@MapsId
-	@JoinColumn(name = HEALTH_CARE_CARD_NUMBER_DB)
-	private AddressEntity addressEntity;
-	/**
-	 * Contains users' phone number.
-	 */
-	private String phone;
-	/**
-	 * Contains users' email address.
-	 */
-	private String email;
-	/**
-	 * Contains position of the pharmacist.
-	 */
-	private String position;
-	/**
-	 * Contains clients' personal account value.
-	 */
-	@Column(name = PERSONAL_ACCOUNT_DB)
-	private BigDecimal personalAccount;
-	/**
-	 * Contains number of clients' payment card.
-	 */
-	@Column(name = PAYMENT_CARD_NUMBER_DB)
-	private Long paymentCardNumber;
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	@OneToOne(mappedBy = PERSONAL_INFO_ENTITY, cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	private UserEntity userEntity;
+    /**
+     * Contains health care card number of personal info.
+     */
+    @Id
+    @Column(name = HEALTH_CARE_CARD_NUMBER_DB)
+    private Long healthCareCardNumber;
+    /**
+     * Contains surname of the user.
+     */
+    private String surname;
+    /**
+     * Contains name of the user.
+     */
+    private String name;
+    /**
+     * Contains users' birthdate.
+     */
+    @Column(name = DATE_OF_BIRTH_DB)
+    private Date birthDate;
+    /**
+     * Contains users' address.
+     */
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = HEALTH_CARE_CARD_NUMBER_DB)
+    private AddressEntity addressEntity;
+    /**
+     * Contains users' phone number.
+     */
+    private String phone;
+    /**
+     * Contains users' email address.
+     */
+    private String email;
+    /**
+     * Contains position of the pharmacist.
+     */
+    private String position;
+    /**
+     * Contains clients' personal account value.
+     */
+    @Column(name = PERSONAL_ACCOUNT_DB)
+    private BigDecimal personalAccount;
+    /**
+     * Contains number of clients' payment card.
+     */
+    @Column(name = PAYMENT_CARD_NUMBER_DB)
+    private Long paymentCardNumber;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToOne(mappedBy = PERSONAL_INFO_ENTITY)
+    @PrimaryKeyJoinColumn
+    private UserEntity userEntity;
 }

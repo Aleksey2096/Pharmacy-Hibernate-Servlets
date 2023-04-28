@@ -9,8 +9,7 @@ import by.academy.pharmacy.entity.OrderObject;
 import by.academy.pharmacy.entity.PaginationObject;
 import by.academy.pharmacy.service.database.MedicineDaoService;
 import by.academy.pharmacy.service.database.impl.MedicineDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COMMAND;
 import static by.academy.pharmacy.entity.Constant.JSP_PHARMACIST_MEDICINES_INDEX_JSP;
@@ -37,16 +36,14 @@ public final class ReadPaginatedMedicinesCommand implements Command {
     @Override
     public String execute(final HttpServletRequest request) {
         request.setAttribute(COMMAND, request.getParameter(COMMAND));
-        PaginationObject<MedicineEntity> paginationObject
-                = paginationObjectExtractor
-                .extract(request);
+        PaginationObject<MedicineEntity> paginationObject = paginationObjectExtractor.extract(
+                request);
         OrderObject orderObject = orderObjectExtractor.extract(request);
         String searchValue = request.getParameter(SEARCH_VALUE);
         request.setAttribute(SEARCH_VALUE, searchValue);
         request.setAttribute(ORDER_OBJECT, orderObject);
         request.setAttribute(MEDICINES,
-                service.readAllWithParameters(paginationObject, orderObject,
-                        searchValue));
+                service.readAllWithParameters(paginationObject, orderObject, searchValue));
         return JSP_PHARMACIST_MEDICINES_INDEX_JSP;
     }
 }

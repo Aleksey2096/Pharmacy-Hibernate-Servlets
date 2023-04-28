@@ -26,22 +26,14 @@ import static by.academy.pharmacy.entity.Constant.PRICE;
 import static by.academy.pharmacy.entity.Constant.USER_ENTITY;
 
 public final class OrderDaoImpl implements OrderDAO {
-    private final EntityManager entityManager
-            = HibernateUtil.getEntityManager();
-
     @Override
     public Class<OrderEntity> getEntityClass() {
         return OrderEntity.class;
     }
 
     @Override
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    @Override
-    public Predicate createCommonPredicate(final Root<OrderEntity> root,
-                                           final String searchValue) {
+    public Predicate createCommonPredicate(final Root<OrderEntity> root, final String searchValue,
+                                           final EntityManager entityManager) {
         return createOrPredicate(searchValue, List.of(
                 root.get(ID).as(String.class),
                 root.get(LOCAL_DATE_TIME).as(String.class),
@@ -50,32 +42,29 @@ public final class OrderDaoImpl implements OrderDAO {
                 root.get(PAYMENT_CARD_NUMBER).as(String.class),
                 root.get(CONTACT_PHONE),
                 root.get(DELIVERY_ADDRESS)
-        ));
+        ), entityManager);
     }
 
     @Override
     public PaginationObject<OrderEntity> selectAllWithParameters(
-            final PaginationObject<OrderEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<OrderEntity> pagination, final OrderObject orderObject,
             final String searchValue) {
-        return selectAllWithParameters(pagination, orderObject, ID,
-                searchValue);
+        return selectAllWithParameters(pagination, orderObject, ID, searchValue);
     }
 
     @Override
     public PaginationObject<OrderEntity> selectAllWithParametersByUser(
-            final PaginationObject<OrderEntity> pagination,
-            final OrderObject orderObject,
+            final PaginationObject<OrderEntity> pagination, final OrderObject orderObject,
             final String searchValue, final UserEntity userEntity) {
+        EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.clear();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<OrderEntity> cq = cb.createQuery(OrderEntity.class);
         Root<OrderEntity> root = cq.from(OrderEntity.class);
         Predicate mainPredicate;
         Predicate userPredicate = cb.equal(root.get(USER_ENTITY), userEntity);
         if (searchValue != null && !searchValue.isBlank()) {
-            mainPredicate = cb.and(createCommonPredicate(root, searchValue),
+            mainPredicate = cb.and(createCommonPredicate(root, searchValue, entityManager),
                     userPredicate);
         } else {
             mainPredicate = userPredicate;
@@ -90,19 +79,17 @@ public final class OrderDaoImpl implements OrderDAO {
             cq.orderBy(cb.desc(root.get(orderObject.getOrderField())));
         }
         TypedQuery<OrderEntity> typedQuery = entityManager.createQuery(cq);
-        typedQuery
-                .setFirstResult((pagination.getCurrentPage() - 1)
-                        * pagination.getRecordsPerPage());
+        typedQuery.setFirstResult(
+                (pagination.getCurrentPage() - 1) * pagination.getRecordsPerPage());
         typedQuery.setMaxResults(pagination.getRecordsPerPage());
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         countQuery.select(cb.count(countQuery.from(OrderEntity.class)));
         countQuery.where(mainPredicate);
-        pagination.setPagesNum(
-                countNumberOfPages(pagination.getRecordsPerPage(),
-                        entityManager.createQuery(countQuery)
-                                .getSingleResult()));
+        pagination.setPagesNum(countNumberOfPages(pagination.getRecordsPerPage(),
+                entityManager.createQuery(countQuery).getSingleResult()));
         pagination.setRecords(typedQuery.getResultList());
         entityManager.getTransaction().commit();
+        entityManager.close();
         return pagination;
     }
 }

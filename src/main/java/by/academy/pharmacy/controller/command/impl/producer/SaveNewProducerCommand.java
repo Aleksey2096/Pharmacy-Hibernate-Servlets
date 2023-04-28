@@ -6,8 +6,7 @@ import by.academy.pharmacy.controller.extractor.impl.ProducerDtoExtractor;
 import by.academy.pharmacy.dto.ProducerDTO;
 import by.academy.pharmacy.service.database.ProducerDaoService;
 import by.academy.pharmacy.service.database.impl.ProducerDaoServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.PREVIOUS_REQUEST_LINK;
 

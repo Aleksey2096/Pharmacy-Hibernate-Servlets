@@ -6,8 +6,7 @@ import by.academy.pharmacy.entity.Country;
 import by.academy.pharmacy.service.database.ProducerDaoService;
 import by.academy.pharmacy.service.database.impl.ProducerDaoServiceImpl;
 import by.academy.pharmacy.service.util.RequestDataUtil;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static by.academy.pharmacy.entity.Constant.COUNTRIES;
 import static by.academy.pharmacy.entity.Constant.JSP_PHARMACIST_PRODUCERS_EDIT_JSP;
@@ -27,8 +26,7 @@ public final class GetProducerEditFormCommand implements Command {
                 RequestDataUtil.getLong(PRODUCER_ID_DB, request));
         request.setAttribute(PRODUCER, producerDTO);
         request.setAttribute(COUNTRIES, Country.values());
-        request.setAttribute(PREVIOUS_REQUEST_LINK,
-                request.getParameter(PREVIOUS_REQUEST_LINK));
+        request.setAttribute(PREVIOUS_REQUEST_LINK, request.getParameter(PREVIOUS_REQUEST_LINK));
         return JSP_PHARMACIST_PRODUCERS_EDIT_JSP;
     }
 }

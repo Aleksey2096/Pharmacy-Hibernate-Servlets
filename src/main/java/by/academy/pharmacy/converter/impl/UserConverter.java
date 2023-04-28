@@ -1,18 +1,18 @@
-package by.academy.pharmacy.service.mapping.impl;
+package by.academy.pharmacy.converter.impl;
 
+import by.academy.pharmacy.converter.Converter;
 import by.academy.pharmacy.dto.MedicineProductDTO;
 import by.academy.pharmacy.dto.PersonalInfoDTO;
 import by.academy.pharmacy.dto.UserDTO;
 import by.academy.pharmacy.entity.MedicineProductEntity;
 import by.academy.pharmacy.entity.PersonalInfoEntity;
 import by.academy.pharmacy.entity.UserEntity;
-import by.academy.pharmacy.service.mapping.Converter;
 
 public final class UserConverter implements Converter<UserEntity, UserDTO> {
-    private final Converter<PersonalInfoEntity, PersonalInfoDTO>
-            personalInfoConverter = new PersonalInfoConverter();
-    private final Converter<MedicineProductEntity, MedicineProductDTO>
-            medicineProductConverter = new MedicineProductConverter();
+    private final Converter<PersonalInfoEntity, PersonalInfoDTO> personalInfoConverter
+            = new PersonalInfoConverter();
+    private final Converter<MedicineProductEntity, MedicineProductDTO> medicineProductConverter
+            = new MedicineProductConverter();
 
     @Override
     public UserDTO convertToDto(final UserEntity entity) {
@@ -25,11 +25,8 @@ public final class UserConverter implements Converter<UserEntity, UserDTO> {
                 .password(entity.getPassword())
                 .role(entity.getRole())
                 .joinedDate(entity.getJoinedDate())
-                .personalInfoDTO(personalInfoConverter.convertToDto(
-                        entity.getPersonalInfoEntity()))
+                .personalInfoDTO(personalInfoConverter.convertToDto(entity.getPersonalInfoEntity()))
                 .avatarImagePath(entity.getAvatarImagePath())
-                .cart(medicineProductConverter.convertToDtoCollection(
-                        entity.getCart()))
                 .build();
     }
 
@@ -44,8 +41,7 @@ public final class UserConverter implements Converter<UserEntity, UserDTO> {
                 .password(dto.getPassword())
                 .role(dto.getRole())
                 .joinedDate(dto.getJoinedDate())
-                .personalInfoEntity(personalInfoConverter.convertToEntity(
-                        dto.getPersonalInfoDTO()))
+                .personalInfoEntity(personalInfoConverter.convertToEntity(dto.getPersonalInfoDTO()))
                 .avatarImagePath(dto.getAvatarImagePath())
                 .cart(medicineProductConverter.convertToEntities(dto.getCart()))
                 .build();
